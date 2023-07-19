@@ -1,5 +1,6 @@
 package com.airbound.game;
 
+import com.airbound.game.screens.GameScreen;
 import com.airbound.game.screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -8,16 +9,17 @@ import com.badlogic.gdx.graphics.GL20;
 public class Airbound extends Game {
 	private MainMenuScreen mainMenuScreen;
 
-	//private GameScreen gameScreen;
+	private GameScreen gameScreen;
 
 	@Override
 	public void create () {
 		mainMenuScreen = new MainMenuScreen(this);
+		gameScreen = new GameScreen(this);
 		this.setScreen(mainMenuScreen);
 	}
 
 	public void showGameScreen() {
-		//setScreen(gameScreen);
+		setScreen(gameScreen);
 	}
 
 	public void showMainMenuScreen() {
