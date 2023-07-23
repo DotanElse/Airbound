@@ -17,7 +17,7 @@ public class Ball {
         position = new Vector2(x, y);
         velocity = new Vector2(0,0);
         texture = new Texture("ball.png");
-        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        bounds = new Rectangle(x, y, 100, 100);
         maxPush = 300;
         friction = (float) 0.985;
 
@@ -25,22 +25,29 @@ public class Ball {
 
     public void update(float dt){
         Vector2 newPosition = new Vector2(position);
-        newPosition.mulAdd(velocity, dt);
 
         // Apply friction to the velocity
         velocity.scl(friction);
-
+        newPosition.mulAdd(velocity, dt);
         // Set the new position after applying friction
         position.set(newPosition);
-
+        // check wall collision and reverse direction if needed
+        handleWallCollision();
         bounds.setPosition(position.x, position.y);
+
+    }
+
+    private void handleWallCollision(){
+        if(position.x < 0 || position.x > 900-bounds.width)
+        {
+            velocity.set(-velocity.x, velocity.y);
+        }
     }
 
     public void push(Vector2 initialTouch, Vector2 lastTouch, float gravity){
         Vector2 pushVector = initialTouch.sub(lastTouch);
         // Calculate the magnitude of the pushVector
         float magnitude = pushVector.len();
-        System.out.println(magnitude);
         if (magnitude>maxPush)
         {
             pushVector.x *= maxPush/magnitude;

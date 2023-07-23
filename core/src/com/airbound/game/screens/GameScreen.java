@@ -2,6 +2,7 @@ package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
 import com.airbound.game.sprites.Ball;
+import com.airbound.game.sprites.Wall;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,6 +21,7 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     private Texture background;
     private Ball ball;
+    private Wall wall;
     private SpriteBatch sb;
     private Vector2 initialTouch;
     private Vector2 lastTouch;
@@ -36,10 +38,12 @@ public class GameScreen implements Screen {
         viewport.setCamera(camera);
         gravity = 300;
         background = new Texture("background.png");
+        wall = new Wall();
         ball = new Ball(300, 300);
         isDragging = false; //game init with user not dragging
         initialTouch = new Vector2();
         lastTouch = new Vector2();
+
     }
 
     @Override
@@ -52,7 +56,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         handleInput();
         ball.update(delta);
-        camera.position.y -= gravity * delta;
+        //camera.position.y -= gravity * delta;
 
         float ballY = camera.position.y + ball.getPosition().y;
         Gdx.gl.glClearColor(1,0,0,1);
@@ -60,17 +64,19 @@ public class GameScreen implements Screen {
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
         //sb.draw(background, 0, 0);
+        wall.draw(sb, camera.position.y);
+
         sb.draw(ball.getTexture(), ball.getPosition().x, ballY, 100, 100);
         sb.end();
-
     }
+
 
     private void handleInput() {
         Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(touchPos);
-
         if (Gdx.input.justTouched() && !isDragging)
         {
+            System.out.println(touchPos);
             // Initial touch event
             initialTouch.set(touchPos.x, touchPos.y);
             isDragging = true;
@@ -110,6 +116,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         background.dispose();
         ball.dispose();
+        wall.dispose();
         sb.dispose();
     }
 }
