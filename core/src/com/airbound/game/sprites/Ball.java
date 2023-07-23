@@ -3,7 +3,6 @@ package com.airbound.game.sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import java.util.Random;
 
 
 public class Ball {
@@ -11,12 +10,14 @@ public class Ball {
     private Rectangle bounds;
     private Vector2 position;
     private Vector2 velocity;
+    private float maxPush;
 
     public Ball(int x, int y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,0);
         texture = new Texture("ball.png");
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        maxPush = 300;
 
     }
 
@@ -25,13 +26,18 @@ public class Ball {
         bounds.setPosition(position.x, position.y);
     }
 
-    public void push(){
-        Random random = new Random();
+    public void push(Vector2 initialTouch, Vector2 lastTouch){
+        Vector2 pushVector = initialTouch.sub(lastTouch);
+        System.out.println(pushVector);
+        // Calculate the magnitude of the pushVector
+        float magnitude = pushVector.len();
+        if (magnitude>maxPush)
+        {
+            pushVector.x *= maxPush/magnitude;
+            pushVector.y *= maxPush/magnitude;
+        }
+        velocity.add(pushVector);
 
-        // Gen a random number between -50 to 50
-        int randomNumber1 = random.nextInt(100) - 50;
-        int randomNumber2 = random.nextInt(100) - 50;
-        velocity.add(randomNumber1, randomNumber2);
     }
 
     public Texture getTexture() {

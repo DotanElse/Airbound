@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -20,6 +21,9 @@ public class GameScreen implements Screen {
     private Texture background;
     private Ball ball;
     private SpriteBatch sb;
+    private Vector2 initialTouch;
+    private Vector2 lastTouch;
+    private boolean isDragging;
 
     public GameScreen(Airbound game) {
         this.game = game;
@@ -31,6 +35,9 @@ public class GameScreen implements Screen {
         viewport.setCamera(camera);
         background = new Texture("background.png");
         ball = new Ball(300, 300);
+        isDragging = false; //game init with user not dragging
+        initialTouch = new Vector2();
+        lastTouch = new Vector2();
     }
 
     @Override
@@ -57,15 +64,23 @@ public class GameScreen implements Screen {
     }
 
     private void handleInput() {
-        if (Gdx.input.justTouched()) {
-            // Unproject touch coordinates based on the camera's projection matrix
-            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            float touchX = touchPos.x;
-            float touchY = touchPos.y;
-            ball.push();
-            System.out.println("X " + touchX + " Y " + touchY);
+        Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(touchPos);
 
+        if (Gdx.input.justTouched() && !isDragging)
+        {
+            // Initial touch event
+            initialTouch.set(touchPos.x, touchPos.y);
+            isDragging = true;
+        }
+
+        if (Gdx.input.isTouched() && isDragging) {
+            // Touch-dragged event
+            lastTouch.set(touchPos.x, touchPos.y);
+        }
+        if(!Gdx.input.isTouched() && isDragging) {
+            ball.push(initialTouch, lastTouch);
+            isDragging = false;
         }
     }
 
