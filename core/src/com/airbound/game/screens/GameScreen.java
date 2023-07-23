@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         handleInput();
         ball.update(delta);
-        //camera.position.y -= gravity * delta;
+        camera.position.y -= gravity * delta;
 
         float ballY = camera.position.y + ball.getPosition().y;
         Gdx.gl.glClearColor(1,0,0,1);

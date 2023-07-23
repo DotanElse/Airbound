@@ -16,7 +16,7 @@ public class Wall {
         parts = 1600/leftTexture.getHeight()+2;
         heights = new int[parts];
         for (int i = 0; i < parts; i++) {
-            heights[i] = (leftTexture.getHeight())*i;
+            heights[i] = (leftTexture.getHeight())*i-900;
             System.out.println((leftTexture.getHeight())*i);
         }
     }
@@ -30,6 +30,7 @@ public class Wall {
                 System.out.println("Repositioned" + heights[i]);
                 heights[i] += parts*(leftTexture.getHeight());
             }
+            System.out.println("heights " + (heights[0]+y));
             sb.draw(leftTexture, 0, heights[i]+y, 20, leftTexture.getHeight());
             sb.draw(rightTexture, 880, heights[i]+y, 20, rightTexture.getHeight());
         }
