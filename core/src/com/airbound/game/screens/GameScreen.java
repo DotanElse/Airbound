@@ -2,7 +2,7 @@ package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
 import com.airbound.game.sprites.Ball;
-import com.airbound.game.sprites.Wall;
+import com.airbound.game.sprites.Walls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen implements Screen {
@@ -21,7 +20,7 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     private Texture background;
     private Ball ball;
-    private Wall wall;
+    private Walls walls;
     private SpriteBatch sb;
     private Vector2 initialTouch;
     private Vector2 lastTouch;
@@ -38,7 +37,7 @@ public class GameScreen implements Screen {
         viewport.setCamera(camera);
         gravity = 300;
         background = new Texture("background.png");
-        wall = new Wall();
+        walls = new Walls();
         ball = new Ball(300, 300);
         isDragging = false; //game init with user not dragging
         initialTouch = new Vector2();
@@ -48,7 +47,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        System.out.println("3");
         viewport.apply();
     }
 
@@ -64,7 +62,7 @@ public class GameScreen implements Screen {
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
         //sb.draw(background, 0, 0);
-        wall.draw(sb, camera.position.y);
+        walls.draw(sb, camera.position.y);
 
         sb.draw(ball.getTexture(), ball.getPosition().x, ballY, 100, 100);
         sb.end();
@@ -76,7 +74,6 @@ public class GameScreen implements Screen {
         camera.unproject(touchPos);
         if (Gdx.input.justTouched() && !isDragging)
         {
-            System.out.println(touchPos);
             // Initial touch event
             initialTouch.set(touchPos.x, touchPos.y);
             isDragging = true;
@@ -116,7 +113,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         background.dispose();
         ball.dispose();
-        wall.dispose();
+        walls.dispose();
         sb.dispose();
     }
 }
