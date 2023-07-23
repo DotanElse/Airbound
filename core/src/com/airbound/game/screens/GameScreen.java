@@ -24,6 +24,7 @@ public class GameScreen implements Screen {
     private Vector2 initialTouch;
     private Vector2 lastTouch;
     private boolean isDragging;
+    private float gravity;
 
     public GameScreen(Airbound game) {
         this.game = game;
@@ -33,6 +34,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 900, 1600);
         viewport = new ExtendViewport(900, 1600, camera);
         viewport.setCamera(camera);
+        gravity = 300;
         background = new Texture("background.png");
         ball = new Ball(300, 300);
         isDragging = false; //game init with user not dragging
@@ -50,7 +52,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         handleInput();
         ball.update(delta);
-        //camera.position.y -= 300 * delta;
+        camera.position.y -= gravity * delta;
 
         float ballY = camera.position.y + ball.getPosition().y;
         Gdx.gl.glClearColor(1,0,0,1);
@@ -79,7 +81,7 @@ public class GameScreen implements Screen {
             lastTouch.set(touchPos.x, touchPos.y);
         }
         if(!Gdx.input.isTouched() && isDragging) {
-            ball.push(initialTouch, lastTouch);
+            ball.push(initialTouch, lastTouch, gravity);
             isDragging = false;
         }
     }
