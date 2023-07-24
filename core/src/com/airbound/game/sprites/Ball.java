@@ -47,7 +47,9 @@ public class Ball {
     }
     private void handleBrickCollision(Bricks bricks)
     {
-        bricks.collisionCheck(bounds);
+        if(velocity.y < 0)
+            if(bricks.collisionCheck(bounds) == 1)
+                velocity.set(velocity.x, -velocity.y);
     }
 
     public void push(Vector2 initialTouch, Vector2 lastTouch, float gravity){

@@ -54,7 +54,7 @@ public class Bricks {
         return new Brick(x, y, width, height, angle);
     }
 
-    public void collisionCheck(Rectangle ball) {
+    public float collisionCheck(Rectangle ball) {
 
         for (Brick brick : bricks) {
             if (ball.overlaps(brick.getShape().getBoundingRectangle())) {
@@ -63,11 +63,11 @@ public class Bricks {
                 float brickTopY = brick.getShape().getY() + brick.getHeight();
 
                 if (ballCenterY >= brickTopY) {
-                    // Ball is above the brick, handle the collision
-                    // Implement logic here to handle the collision with the upper part of the brick, e.g., bounce the ball, remove the brick, etc.
+                    return 1;
                 }
             }
         }
+        return 0;
     }
 
     public void debugRender(Rectangle ball) {

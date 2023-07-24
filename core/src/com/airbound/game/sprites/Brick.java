@@ -62,6 +62,16 @@ public class Brick {
         width = newBrick.width;
         height = newBrick.height;
         angle = newBrick.angle;
+        float[] vertices = {
+                0, 0,
+                newBrick.width, 0,
+                newBrick.width, newBrick.height,
+                0, newBrick.height
+        };
+        shape = new Polygon(vertices);
+        shape.setOrigin(width / 2, height / 2);
+        shape.setRotation(angle);
+        shape.setPosition(x, y);
     }
     // Add any other methods you may need for updating the brick's position, etc.
 }
