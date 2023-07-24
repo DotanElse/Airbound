@@ -8,7 +8,7 @@ public class Walls {
     private final Texture leftTexture;
     private final Texture rightTexture;
     private int parts;
-    int[] heights;
+    private int[] heights;
 
     public Walls(){
         leftTexture = new Texture("wall_left.png");

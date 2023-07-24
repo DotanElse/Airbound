@@ -13,6 +13,7 @@ public class Ball {
     private float maxPush;
     private float friction;
 
+
     public Ball(int x, int y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,0);
@@ -23,7 +24,7 @@ public class Ball {
 
     }
 
-    public void update(float dt){
+    public void update(float dt, Bricks bricks){
         Vector2 newPosition = new Vector2(position);
 
         // Apply friction to the velocity
@@ -33,6 +34,7 @@ public class Ball {
         position.set(newPosition);
         // check wall collision and reverse direction if needed
         handleWallCollision();
+        handleBrickCollision(bricks);
         bounds.setPosition(position.x, position.y);
 
     }
@@ -42,6 +44,10 @@ public class Ball {
         {
             velocity.set(-velocity.x, velocity.y);
         }
+    }
+    private void handleBrickCollision(Bricks bricks)
+    {
+        bricks.collisionCheck(bounds);
     }
 
     public void push(Vector2 initialTouch, Vector2 lastTouch, float gravity){

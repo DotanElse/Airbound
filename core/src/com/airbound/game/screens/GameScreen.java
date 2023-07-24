@@ -2,6 +2,7 @@ package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
 import com.airbound.game.sprites.Ball;
+import com.airbound.game.sprites.Bricks;
 import com.airbound.game.sprites.Walls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -21,6 +22,7 @@ public class GameScreen implements Screen {
     private Texture background;
     private Ball ball;
     private Walls walls;
+    private Bricks bricks;
     private SpriteBatch sb;
     private Vector2 initialTouch;
     private Vector2 lastTouch;
@@ -38,6 +40,7 @@ public class GameScreen implements Screen {
         gravity = 300;
         background = new Texture("background.png");
         walls = new Walls();
+        bricks = new Bricks();
         ball = new Ball(300, 300);
         isDragging = false; //game init with user not dragging
         initialTouch = new Vector2();
@@ -53,7 +56,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         handleInput();
-        ball.update(delta);
+        ball.update(delta, bricks);
         camera.position.y -= gravity * delta;
 
         float ballY = camera.position.y + ball.getPosition().y;
@@ -63,6 +66,8 @@ public class GameScreen implements Screen {
         sb.begin();
         //sb.draw(background, 0, 0);
         walls.draw(sb, camera.position.y);
+        bricks.draw(sb, camera.position.y);
+        //bricks.debugRender(ball.getBounds());
 
         sb.draw(ball.getTexture(), ball.getPosition().x, ballY, 100, 100);
         sb.end();
