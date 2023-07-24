@@ -12,6 +12,7 @@ public class Ball {
     private Vector2 velocity;
     private float maxPush;
     private float friction;
+    private int maxJumps;
 
 
     public Ball(int x, int y){
@@ -21,6 +22,7 @@ public class Ball {
         bounds = new Rectangle(x, y, 100, 100);
         maxPush = 300;
         friction = (float) 0.985;
+        maxJumps = 2;
 
     }
 
@@ -49,10 +51,17 @@ public class Ball {
     {
         if(velocity.y < 0)
             if(bricks.collisionCheck(bounds) == 1)
+            {
+                maxJumps = 2;
                 velocity.set(velocity.x, -velocity.y);
+            }
+
     }
 
     public void push(Vector2 initialTouch, Vector2 lastTouch, float gravity){
+        if(maxJumps == 0)
+            return;
+        maxJumps--;
         Vector2 pushVector = initialTouch.sub(lastTouch);
         // Calculate the magnitude of the pushVector
         float magnitude = pushVector.len();
