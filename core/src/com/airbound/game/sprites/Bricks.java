@@ -32,7 +32,6 @@ public class Bricks {
     }
     public void draw(SpriteBatch sb, float y)
     {
-        System.out.println(y);
         for(Brick brick : bricks)
         {
             brick.draw(sb, texture, y);

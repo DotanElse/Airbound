@@ -96,7 +96,22 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        // Update the viewport with the new dimensions
+        float cameraYBeforeResize = camera.position.y;
+
+        // Update the camera viewport
         viewport.update(width, height, true);
+
+        // Apply the new camera position
+        camera.position.set(viewport.getWorldWidth() / 2, cameraYBeforeResize, 0);
+//
+//        viewport.update(width, height, true);
+//
+//        // Calculate the ratio of the old height to the new height
+//        float heightRatio = (float) height / viewport.getWorldHeight();
+//
+//        // Update the camera position to maintain the focus on the same point
+//        camera.position.y *= heightRatio;
     }
 
     @Override
