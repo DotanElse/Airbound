@@ -13,7 +13,7 @@ public class Ball {
     private float maxPush;
     private float friction;
     private int maxJumps;
-    private static final float BALL_GRAVITY = -500f;
+    private static final float BALL_GRAVITY = -900f;
 
 
     public Ball(int x, int y){
@@ -22,7 +22,7 @@ public class Ball {
         texture = new Texture("ball.png");
         bounds = new Rectangle(x, y, 100, 100);
         maxPush = 300;
-        friction = (float) 0.985;
+        friction = (float) 0.02;
         maxJumps = 2;
 
     }
@@ -31,7 +31,8 @@ public class Ball {
         Vector2 newPosition = new Vector2(position);
 
         // Apply friction to the velocity
-        velocity.scl(friction);
+
+        velocity.scl(1-friction*dt);
         velocity.y += BALL_GRAVITY * dt;
         newPosition.mulAdd(velocity, dt);
         // Set the new position after applying friction
@@ -68,11 +69,10 @@ public class Ball {
         float magnitude = pushVector.len();
         if (magnitude>maxPush)
         {
-            pushVector.x *= maxPush/magnitude;
-            pushVector.y *= maxPush/magnitude;
+            pushVector.scl(maxPush / magnitude);
         }
         pushVector.y += gravity/7;
-        velocity.set(pushVector.scl(4));
+        velocity.set(pushVector.scl(3));
 
     }
 
