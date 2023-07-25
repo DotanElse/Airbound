@@ -13,6 +13,7 @@ public class Ball {
     private float maxPush;
     private float friction;
     private int maxJumps;
+    private static final float BALL_GRAVITY = -500f;
 
 
     public Ball(int x, int y){
@@ -31,6 +32,7 @@ public class Ball {
 
         // Apply friction to the velocity
         velocity.scl(friction);
+        velocity.y += BALL_GRAVITY * dt;
         newPosition.mulAdd(velocity, dt);
         // Set the new position after applying friction
         position.set(newPosition);
@@ -38,7 +40,6 @@ public class Ball {
         handleWallCollision();
         handleBrickCollision(bricks);
         bounds.setPosition(position.x, position.y);
-
     }
 
     private void handleWallCollision(){
