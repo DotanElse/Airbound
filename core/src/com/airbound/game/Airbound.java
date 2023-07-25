@@ -2,13 +2,14 @@ package com.airbound.game;
 
 import com.airbound.game.screens.GameScreen;
 import com.airbound.game.screens.MainMenuScreen;
+import com.airbound.game.screens.PauseScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 public class Airbound extends Game {
 	private MainMenuScreen mainMenuScreen;
-
+	private PauseScreen pauseScreen;
 	private GameScreen gameScreen;
 	private boolean paused;
 
@@ -17,6 +18,7 @@ public class Airbound extends Game {
 		mainMenuScreen = new MainMenuScreen(this);
 		gameScreen = new GameScreen(this);
 		this.setScreen(mainMenuScreen);
+		pauseScreen = new PauseScreen(this, gameScreen);
 	}
 
 	public void showGameScreen() {
@@ -39,12 +41,14 @@ public class Airbound extends Game {
 	public void pause() {
 		super.pause();
 		paused = true;
+		setScreen(pauseScreen);
 	}
 
 	@Override
 	public void resume() {
 		super.resume();
 		paused = false;
+		setScreen(gameScreen);
 	}
 	
 	@Override

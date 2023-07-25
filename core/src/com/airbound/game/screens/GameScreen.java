@@ -55,12 +55,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (game.isPaused())
-        {
-            renderFrozenElements();
-            return;
-        }
-
         handleInput();
         ball.update(delta, bricks);
         camera.position.y -= gravity * delta;
@@ -79,7 +73,7 @@ public class GameScreen implements Screen {
         sb.end();
     }
 
-    private void renderFrozenElements() {
+    public void renderFrozenElements() {
         float ballY = camera.position.y + ball.getPosition().y;
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
