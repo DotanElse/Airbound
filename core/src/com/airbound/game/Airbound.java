@@ -47,8 +47,12 @@ public class Airbound extends Game {
 	@Override
 	public void resume() {
 		super.resume();
-		paused = false;
+		if(paused)
+			return;
 		setScreen(gameScreen);
+	}
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 	
 	@Override

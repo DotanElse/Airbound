@@ -35,6 +35,12 @@ public class PauseScreen implements Screen {
     @Override
     public void render(float delta) {
         gameScreen.renderFrozenElements();
+        if (Gdx.input.justTouched()) {
+            // Notify the game to resume when the screen is clicked
+            game.setPaused(false);
+            game.resume();
+            dispose();
+        }
         //sb.setProjectionMatrix(game.().getCamera().combined);
 
 //        sb.setProjectionMatrix(guiCam.combined);
@@ -70,7 +76,7 @@ public class PauseScreen implements Screen {
     @Override
     public void dispose() {
         // Dispose of any disposable resources, if needed.
-        sb.dispose();
+        //sb.dispose();
         continueButton.dispose();
         // Dispose of other resources used in the menu.
     }
