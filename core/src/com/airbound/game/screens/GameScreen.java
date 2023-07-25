@@ -134,6 +134,15 @@ public class GameScreen implements Screen {
 
     }
 
+    public OrthographicCamera getCamera()
+    {
+        return camera;
+    }
+    public Viewport getViewport()
+    {
+        return viewport;
+    }
+
     @Override
     public void resume() {
 

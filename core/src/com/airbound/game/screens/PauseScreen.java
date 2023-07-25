@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class PauseScreen implements Screen {
     private Airbound game;
@@ -16,16 +17,19 @@ public class PauseScreen implements Screen {
     private OrthographicCamera guiCam;
     float continueButtonX;
     float continueButtonY;
-    // Add any other necessary variables for your menu elements (buttons, labels, etc.).
+    float textureWidth = 200;
+    float textureHeight = 200;
 
     public PauseScreen(Airbound game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
         continueButton = new Texture("continue.png");
-//        guiCam = game.getGuiCam();
-//        sb = new SpriteBatch();
-//        continueButtonX = (guiCam.viewportWidth - continueButton.getWidth()) / 2;
-//        continueButtonY = (guiCam.viewportHeight - continueButton.getHeight()) / 2;
+        sb = new SpriteBatch();
+        guiCam = new OrthographicCamera();
+        guiCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        System.out.println(Gdx.graphics.getWidth());
+        continueButtonX = (guiCam.viewportWidth - textureWidth) / 2;
+        continueButtonY = (guiCam.viewportHeight - textureHeight) / 2;
     }
 
     @Override
@@ -36,49 +40,46 @@ public class PauseScreen implements Screen {
     public void render(float delta) {
         gameScreen.renderFrozenElements();
         if (Gdx.input.justTouched()) {
-            // Notify the game to resume when the screen is clicked
-            game.setPaused(false);
-            game.resume();
-            dispose();
-        }
-        //sb.setProjectionMatrix(game.().getCamera().combined);
+            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            guiCam.unproject(touchPos);
+            float touchX = touchPos.x;
+            float touchY = touchPos.y;
 
-//        sb.setProjectionMatrix(guiCam.combined);
-//        sb.begin();
-//        sb.draw(continueButton, continueButtonX, continueButtonY);
-//        sb.end();
-//        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
-//
-//        sb.begin();
-//        sb.draw(continueButton, continueButtonX, continueButtonY, 300, 300);
-//        sb.end();
+            if (touchX >= continueButtonX && touchX <= continueButtonX + textureWidth &&
+                    touchY >= continueButtonY && touchY <= continueButtonY + textureHeight) {
+                game.setPaused(false);
+                game.resume();
+            }
+        }
+
+        sb.setProjectionMatrix(guiCam.combined);
+        sb.begin();
+        sb.draw(continueButton, continueButtonX, continueButtonY, textureWidth, textureHeight);
+        sb.end();
     }
 
     @Override
     public void resize(int width, int height) {
+        guiCam.setToOrtho(false, width, height);
+        continueButtonX = (guiCam.viewportWidth - textureWidth) / 2;
+        continueButtonY = (guiCam.viewportHeight - textureHeight) / 2;
     }
 
     @Override
     public void pause() {
-        // Implement any necessary logic when the pause screen is paused, if needed.
     }
 
     @Override
     public void resume() {
-        // Implement any necessary logic when the pause screen is resumed, if needed.
     }
 
     @Override
     public void hide() {
-        // Implement any necessary logic when the pause screen is hidden, if needed.
     }
 
     @Override
     public void dispose() {
-        // Dispose of any disposable resources, if needed.
-        //sb.dispose();
+        sb.dispose();
         continueButton.dispose();
-        // Dispose of other resources used in the menu.
     }
 }
-
