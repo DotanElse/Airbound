@@ -10,6 +10,7 @@ public class Airbound extends Game {
 	private MainMenuScreen mainMenuScreen;
 
 	private GameScreen gameScreen;
+	private boolean paused;
 
 	@Override
 	public void create () {
@@ -34,8 +35,23 @@ public class Airbound extends Game {
 		// Call the super method to render the active screen
 		super.render();
 	}
+	@Override
+	public void pause() {
+		super.pause();
+		paused = true;
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+		paused = false;
+	}
 	
 	@Override
 	public void dispose () {
+	}
+
+	public boolean isPaused() {
+		return paused;
 	}
 }
