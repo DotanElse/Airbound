@@ -26,6 +26,8 @@ public class Airbound extends Game {
 	}
 
 	public void showMainMenuScreen() {
+		gameScreen = new GameScreen(this);
+		pauseScreen = new PauseScreen(this, gameScreen);
 		setScreen(mainMenuScreen);
 	}
 
@@ -33,7 +35,6 @@ public class Airbound extends Game {
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		// Call the super method to render the active screen
 		super.render();
 	}
