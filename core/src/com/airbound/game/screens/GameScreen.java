@@ -36,7 +36,6 @@ public class GameScreen implements Screen {
     private float gravity;
     private boolean gameEnded;
     private BitmapFont font;
-    int currScore;
 
     public GameScreen(Airbound game) {
         this.game = game;
@@ -61,7 +60,6 @@ public class GameScreen implements Screen {
         font = new BitmapFont(); // default
         font.getData().setScale(2.5f);
         font.setColor(Color.WHITE);
-        currScore = 0;
 
     }
 
@@ -77,6 +75,7 @@ public class GameScreen implements Screen {
         ball.update(delta, bricks);
         float ballY = camera.position.y + ball.getPosition().y;
         if (ballY < -100) {
+            game.setNewScore(ball.getHighestBrick());
             // The ball is not visible on the screen anymore, show the main menu screen
             game.showMainMenuScreen();
         }

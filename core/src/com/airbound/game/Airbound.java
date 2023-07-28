@@ -11,14 +11,16 @@ public class Airbound extends Game {
 	private MainMenuScreen mainMenuScreen;
 	private PauseScreen pauseScreen;
 	private GameScreen gameScreen;
+	private PreferencesManager preferencesManager;
 	private boolean paused;
 
 	@Override
 	public void create () {
 		mainMenuScreen = new MainMenuScreen(this);
 		gameScreen = new GameScreen(this);
-		this.setScreen(mainMenuScreen);
 		pauseScreen = new PauseScreen(this, gameScreen);
+		preferencesManager = new PreferencesManager();
+		this.setScreen(mainMenuScreen);
 	}
 
 	public void showGameScreen() {
@@ -55,12 +57,21 @@ public class Airbound extends Game {
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
-	
+
+	public PreferencesManager getPreferencesManager() {
+		return preferencesManager;
+	}
+
 	@Override
 	public void dispose () {
 	}
 
 	public boolean isPaused() {
 		return paused;
+	}
+
+	public void setNewScore(int highestBrick) {
+		if(preferencesManager.getHighScore() < highestBrick)
+			preferencesManager.setHighScore(highestBrick);
 	}
 }

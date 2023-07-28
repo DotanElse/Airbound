@@ -3,9 +3,11 @@ package com.airbound.game.screens;
 import com.airbound.game.Airbound;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -14,21 +16,29 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class MainMenuScreen implements Screen {
     private Airbound game;
     private OrthographicCamera camera;
+    private OrthographicCamera guiCam;
     private Viewport viewport;
     private Texture background;
     private Texture playButton;
     private SpriteBatch sb;
     private float playButtonX;
     private float playButtonY;
+    private BitmapFont font;
+
 
     public MainMenuScreen(Airbound game) {
         this.game = game;
         sb = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 900, 1600);
+        guiCam = new OrthographicCamera();
+        guiCam.setToOrtho(false, 900, 1600);
         viewport = new ExtendViewport(900, 1600, camera);
         //background = new Texture("background.png");
         playButton = new Texture("playButton.png");
+        font = new BitmapFont(); // default
+        font.getData().setScale(2.5f);
+        font.setColor(Color.WHITE);
     }
 
     @Override
@@ -45,10 +55,10 @@ public class MainMenuScreen implements Screen {
         sb.begin();
         sb.draw(playButton, playButtonX, playButtonY);
         sb.end();
-
-//        if (true) {
-//            game.showGameScreen();
-//        }
+        sb.setProjectionMatrix(guiCam.combined);
+        sb.begin();
+        font.draw(sb, "High Score: " + game.getPreferencesManager().getHighScore(), 20, 1600);
+        sb.end();
     }
 
     private void handleInput() {
