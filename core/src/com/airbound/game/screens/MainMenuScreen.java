@@ -55,7 +55,7 @@ public class MainMenuScreen implements Screen {
         sb.begin();
         for(int i=0; i<6; i++)
         {
-            sb.draw(background, 0, (background.getHeight())*i-900, 900, background.getHeight());
+            sb.draw(background, 0, (background.getHeight())*i-80, 900, background.getHeight());
         }
         sb.draw(playButton, playButtonX, playButtonY);
         sb.end();
