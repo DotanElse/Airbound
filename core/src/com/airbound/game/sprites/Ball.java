@@ -13,6 +13,7 @@ public class Ball {
     private float maxPush;
     private float friction;
     private int maxJumps;
+    private int highestBrick;
     private static final float BALL_GRAVITY = -900f;
 
 
@@ -24,6 +25,7 @@ public class Ball {
         maxPush = 300;
         friction = (float) 0.02;
         maxJumps = 2;
+        highestBrick = 0;
 
     }
 
@@ -52,11 +54,16 @@ public class Ball {
     private void handleBrickCollision(Bricks bricks)
     {
         if(velocity.y < 0)
-            if(bricks.collisionCheck(bounds) == 1)
+        {
+            int brickCollision = bricks.collisionCheck(bounds);
+            if(brickCollision > 0)
             {
                 maxJumps = 2;
                 velocity.set(velocity.x, -velocity.y);
+                highestBrick = Math.max(highestBrick, brickCollision);
             }
+        }
+
 
     }
 
@@ -98,6 +105,10 @@ public class Ball {
 
     public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
+    }
+
+    public int getHighestBrick() {
+        return highestBrick;
     }
 
     public void dispose(){

@@ -6,19 +6,24 @@ import com.airbound.game.sprites.Bricks;
 import com.airbound.game.sprites.Walls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
+
 public class GameScreen implements Screen {
     private Airbound game;
     private OrthographicCamera camera;
     private Viewport viewport;
+    private OrthographicCamera guiCam;
     private Texture background;
     private Ball ball;
     private Walls walls;
@@ -29,6 +34,8 @@ public class GameScreen implements Screen {
     private boolean isDragging;
     private float gravity;
     private boolean gameEnded;
+    private BitmapFont font;
+    int currScore;
 
     public GameScreen(Airbound game) {
         this.game = game;
@@ -36,6 +43,8 @@ public class GameScreen implements Screen {
         sb = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 900, 1600);
+        guiCam = new OrthographicCamera();
+        guiCam.setToOrtho(false, 900, 1600);
         viewport = new ExtendViewport(900, 1600, camera);
         viewport.setCamera(camera);
         gravity = 300;
@@ -47,6 +56,10 @@ public class GameScreen implements Screen {
         initialTouch = new Vector2();
         lastTouch = new Vector2();
         gameEnded = false;
+        font = new BitmapFont(); // default
+        font.getData().setScale(2.5f);
+        font.setColor(Color.WHITE);
+        currScore = 0;
 
     }
 
@@ -75,6 +88,16 @@ public class GameScreen implements Screen {
 
         sb.draw(ball.getTexture(), ball.getPosition().x, ballY, 100, 100);
         sb.end();
+        drawGui();
+
+    }
+
+    public void drawGui()
+    {
+        sb.setProjectionMatrix(guiCam.combined);
+        sb.begin();
+        font.draw(sb, "" + ball.getHighestBrick(), 20, 1600);
+        sb.end();
     }
 
     public void renderFrozenElements() {
@@ -90,6 +113,7 @@ public class GameScreen implements Screen {
 
         sb.draw(ball.getTexture(), ball.getPosition().x, ballY, 100, 100);
         sb.end();
+        drawGui();
     }
 
 

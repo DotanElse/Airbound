@@ -27,7 +27,7 @@ public class Bricks {
 
         for(int i=0; i<6; i++)
         {
-            bricks.add(createRandomBrick(i*1000));
+            bricks.add(createRandomBrick(i*1000, i+1));
         }
     }
     public void draw(SpriteBatch sb, float y)
@@ -37,23 +37,25 @@ public class Bricks {
             brick.draw(sb, texture, y);
             if(brick.getY()+brick.getHeight() < -y) // vision of the brick is gone
             {
-                Brick newBrick = createRandomBrick(-y+6000);
+
+                Brick newBrick = createRandomBrick(-y+6000,  brick.getBrickHeight()+6);
                 brick.replace(newBrick);
             }
 
         }
     }
 
-    private Brick createRandomBrick(float y) {
+    private Brick createRandomBrick(float y, int brickHeight) {
         int width = rng.nextInt(400 - 100 + 1) + 100;
         int x = rng.nextInt((880 - width) - 20 + 1) + 20;
         int height = 40;
         int angle = 0;
 
-        return new Brick(x, y, width, height, angle);
+
+        return new Brick(x, y, width, height, angle, brickHeight);
     }
 
-    public float collisionCheck(Rectangle ball) {
+    public int collisionCheck(Rectangle ball) {
 
         for (Brick brick : bricks) {
             if (ball.overlaps(brick.getShape().getBoundingRectangle())) {
@@ -62,7 +64,7 @@ public class Bricks {
                 float brickTopY = brick.getShape().getY() + brick.getHeight();
 
                 if (ballCenterY >= brickTopY) {
-                    return 1;
+                    return brick.getBrickHeight();
                 }
             }
         }

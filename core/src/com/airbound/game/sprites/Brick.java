@@ -9,13 +9,15 @@ public class Brick {
     private float x, y;
     private float width, height;
     private float angle; // Angle in degrees
+    private int brickHeight;
 
-    public Brick(float x, float y, float width, float height, float angle) {
+    public Brick(float x, float y, float width, float height, float angle, int brickHeight) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.angle = angle;
+        this.brickHeight = brickHeight;
 
         // Create the polygon shape for the brick
         float[] vertices = {
@@ -62,6 +64,7 @@ public class Brick {
         width = newBrick.width;
         height = newBrick.height;
         angle = newBrick.angle;
+        brickHeight = newBrick.brickHeight;
         float[] vertices = {
                 0, 0,
                 newBrick.width, 0,
@@ -72,6 +75,10 @@ public class Brick {
         shape.setOrigin(width / 2, height / 2);
         shape.setRotation(angle);
         shape.setPosition(x, y);
+    }
+
+    public int getBrickHeight() {
+        return brickHeight;
     }
     // Add any other methods you may need for updating the brick's position, etc.
 }
