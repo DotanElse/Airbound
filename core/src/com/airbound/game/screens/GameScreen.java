@@ -25,6 +25,7 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     private OrthographicCamera guiCam;
     private Texture background;
+    private Texture ballPush;
     private Ball ball;
     private Walls walls;
     private Bricks bricks;
@@ -49,6 +50,7 @@ public class GameScreen implements Screen {
         viewport.setCamera(camera);
         gravity = 300;
         background = new Texture("background.png");
+        ballPush = new Texture("ballPush.png");
         walls = new Walls();
         bricks = new Bricks();
         ball = new Ball(300, 300);
@@ -78,7 +80,6 @@ public class GameScreen implements Screen {
             // The ball is not visible on the screen anymore, show the main menu screen
             game.showMainMenuScreen();
         }
-        System.out.println(ballY);
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.setProjectionMatrix(camera.combined);
@@ -97,6 +98,13 @@ public class GameScreen implements Screen {
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
         font.draw(sb, "" + ball.getHighestBrick(), 20, 1600);
+        if(ball.getMaxJumps() >=1)
+        {
+            sb.draw(ballPush, 820, 1540, 50, 50);
+            if(ball.getMaxJumps() == 2)
+                sb.draw(ballPush, 770, 1540, 50, 50);
+        }
+
         sb.end();
     }
 

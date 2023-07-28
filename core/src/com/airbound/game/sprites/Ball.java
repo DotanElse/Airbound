@@ -110,6 +110,9 @@ public class Ball {
     public int getHighestBrick() {
         return highestBrick;
     }
+    public int getMaxJumps() {
+        return maxJumps;
+    }
 
     public void dispose(){
         texture.dispose();
