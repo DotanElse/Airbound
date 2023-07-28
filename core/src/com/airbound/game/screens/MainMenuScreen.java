@@ -34,7 +34,7 @@ public class MainMenuScreen implements Screen {
         guiCam = new OrthographicCamera();
         guiCam.setToOrtho(false, 900, 1600);
         viewport = new ExtendViewport(900, 1600, camera);
-        //background = new Texture("background.png");
+        background = new Texture("background.png");
         playButton = new Texture("playButton.png");
         font = new BitmapFont(); // default
         font.getData().setScale(2.5f);
@@ -53,6 +53,10 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
+        for(int i=0; i<6; i++)
+        {
+            sb.draw(background, 0, (background.getHeight())*i-900, 900, background.getHeight());
+        }
         sb.draw(playButton, playButtonX, playButtonY);
         sb.end();
         sb.setProjectionMatrix(guiCam.combined);

@@ -1,6 +1,7 @@
 package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
+import com.airbound.game.sprites.Background;
 import com.airbound.game.sprites.Ball;
 import com.airbound.game.sprites.Bricks;
 import com.airbound.game.sprites.Walls;
@@ -24,7 +25,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private Viewport viewport;
     private OrthographicCamera guiCam;
-    private Texture background;
+    private Background background;
     private Texture ballPush;
     private Ball ball;
     private Walls walls;
@@ -48,7 +49,7 @@ public class GameScreen implements Screen {
         viewport = new ExtendViewport(900, 1600, camera);
         viewport.setCamera(camera);
         gravity = 300;
-        background = new Texture("background.png");
+        background = new Background();
         ballPush = new Texture("ballPush.png");
         walls = new Walls();
         bricks = new Bricks();
@@ -83,6 +84,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
+        background.draw(sb, camera.position.y);
         walls.draw(sb, camera.position.y);
         bricks.draw(sb, camera.position.y);
 
@@ -113,11 +115,9 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
-        //sb.draw(background, 0, 0);
+        background.draw(sb, camera.position.y);
         walls.draw(sb, camera.position.y);
         bricks.draw(sb, camera.position.y);
-        //bricks.debugRender(ball.getBounds());
-
         sb.draw(ball.getTexture(), ball.getPosition().x, ballY, 100, 100);
         sb.end();
         drawGui();
