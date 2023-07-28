@@ -48,8 +48,13 @@ public class Ball {
     private void handleWallCollision(){
         if(position.x < 0 || position.x > 900-bounds.width)
         {
+            if(position.x < 0)
+                position.x = 20;
+            if(position.x > 900-bounds.width)
+                position.x = 900-bounds.width;
             velocity.set(-velocity.x, velocity.y);
         }
+
     }
     private void handleBrickCollision(Bricks bricks)
     {
