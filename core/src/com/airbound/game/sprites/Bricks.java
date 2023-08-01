@@ -24,8 +24,9 @@ public class Bricks {
         texture = new Texture("brick.png");
         bricks = new ArrayList<>();
         rng = new Random();
-
-        for(int i=0; i<6; i++)
+        Brick firstBrick = new Brick(20, -200, 860, 60, 0, 1);
+        bricks.add(firstBrick);
+        for(int i=1; i<6; i++)
         {
             bricks.add(createRandomBrick(i*1000, i+1));
         }

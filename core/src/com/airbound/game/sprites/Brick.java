@@ -80,5 +80,4 @@ public class Brick {
     public int getBrickHeight() {
         return brickHeight;
     }
-    // Add any other methods you may need for updating the brick's position, etc.
 }
