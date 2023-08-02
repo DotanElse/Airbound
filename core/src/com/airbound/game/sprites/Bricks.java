@@ -19,16 +19,17 @@ public class Bricks {
     private final Texture texture;
     private List<Brick> bricks;
     private Random rng;
+    private final int MIN_WIDTH = 100;
 
     public Bricks(){
         texture = new Texture("brick.png");
         bricks = new ArrayList<>();
         rng = new Random();
-        Brick firstBrick = new Brick(20, -200, 860, 60, 0, 1);
+        Brick firstBrick = new Brick(20, -200, 400, 40, 0, 1);
         bricks.add(firstBrick);
-        for(int i=1; i<6; i++)
+        for(int i=1; i<12; i++)
         {
-            bricks.add(createRandomBrick(i*1000, i+1));
+            bricks.add(createRandomBrick(i*500, i+1));
         }
     }
     public void draw(SpriteBatch sb, float y)
@@ -38,8 +39,7 @@ public class Bricks {
             brick.draw(sb, texture, y);
             if(brick.getY()+brick.getHeight() < -y) // vision of the brick is gone
             {
-
-                Brick newBrick = createRandomBrick(-y+6000,  brick.getBrickHeight()+6);
+                Brick newBrick = createRandomBrick(-y+6000,  brick.getBrickHeight()+12);
                 brick.replace(newBrick);
             }
 
@@ -47,7 +47,8 @@ public class Bricks {
     }
 
     private Brick createRandomBrick(float y, int brickHeight) {
-        int width = rng.nextInt(400 - 100 + 1) + 100;
+        int maxWidth = 300 - brickHeight*3;
+        int width = Math.max(rng.nextInt(maxWidth - maxWidth/2 + 1) + maxWidth/2, MIN_WIDTH);
         int x = rng.nextInt((880 - width) - 20 + 1) + 20;
         int height = 40;
         int angle = 0;
