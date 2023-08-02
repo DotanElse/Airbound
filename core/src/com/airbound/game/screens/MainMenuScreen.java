@@ -57,7 +57,7 @@ public class MainMenuScreen implements Screen {
         {
             sb.draw(background, 0, (background.getHeight())*i-80, 900, background.getHeight());
         }
-        sb.draw(playButton, playButtonX, playButtonY);
+        sb.draw(playButton, playButtonX, playButtonY, 175, 175);
         sb.end();
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
@@ -76,8 +76,8 @@ public class MainMenuScreen implements Screen {
 
             //System.out.println((touchX) + " " + touchY + " " + playButtonX + " " + playButtonY);
 
-            if (touchX >= playButtonX && touchX <= playButtonX + playButton.getWidth() &&
-                    touchY >= playButtonY && touchY <= playButtonY + playButton.getHeight()) {
+            if (touchX >= playButtonX && touchX <= playButtonX + 175 &&
+                    touchY >= playButtonY && touchY <= playButtonY + 175) {
                 game.showGameScreen();
             }
         }
@@ -86,8 +86,8 @@ public class MainMenuScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        playButtonX = (camera.viewportWidth - playButton.getWidth()) / 2;
-        playButtonY = (camera.viewportHeight - playButton.getHeight()) / 2;
+        playButtonX = (camera.viewportWidth - 175) / 2;
+        playButtonY = (camera.viewportHeight - 175) / 2;
     }
 
     @Override

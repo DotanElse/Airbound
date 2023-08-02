@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
         lastTouch = new Vector2();
         gameEnded = false;
         font = new BitmapFont(); // default
-        font.getData().setScale(2.5f);
+        font.getData().setScale(3f);
         font.setColor(Color.WHITE);
 
     }
