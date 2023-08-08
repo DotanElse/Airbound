@@ -22,7 +22,7 @@ public class Bricks {
     private final int MIN_WIDTH = 100;
 
     public Bricks(){
-        texture = new Texture("brick.png");
+        texture = new Texture("brickDebug.png");
         bricks = new ArrayList<>();
         rng = new Random();
         Brick firstBrick = new Brick(20, -200, 400, 40, 0, 1);
@@ -51,23 +51,43 @@ public class Bricks {
         int width = Math.max(rng.nextInt(maxWidth - maxWidth/2 + 1) + maxWidth/2, MIN_WIDTH);
         int x = rng.nextInt((880 - width) - 20 + 1) + 20;
         int height = 40;
-        int angle = 0;
+        int angle = 40;
 
 
         return new Brick(x, y, width, height, angle, brickHeight);
     }
 
     public int collisionCheck(Rectangle ball) {
-
         for (Brick brick : bricks) {
-            if (ball.overlaps(brick.getShape().getBoundingRectangle())) {
-                // Check if the center of the ball is above the brick
+            if (Intersector.overlapConvexPolygons(ballVertices(ball), brick.getShape())) {
+                System.out.println("Touching");
                 float ballCenterY = ball.y + ball.height / 2;
-                float brickTopY = brick.getShape().getY() + brick.getHeight();
+                float brickTopY = brick.getY();
 
                 if (ballCenterY >= brickTopY) {
                     return brick.getBrickHeight();
                 }
+            }
+        }
+        System.out.println("Not touching");
+        return 0;
+    }
+
+    private Polygon ballVertices(Rectangle ball) {
+        float[] vertices = {
+                ball.x, ball.y,
+                ball.x + ball.width, ball.y,
+                ball.x + ball.width, ball.y + ball.height,
+                ball.x, ball.y + ball.height
+        };
+        return new Polygon(vertices);
+    }
+
+
+    public float getBrickTopY(int brickHeight) {
+        for (Brick brick : bricks) {
+            if (brick.getBrickHeight() == brickHeight) {
+                return brick.getShape().getY() + brick.getHeight();
             }
         }
         return 0;

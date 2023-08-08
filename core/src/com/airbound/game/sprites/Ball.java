@@ -20,7 +20,7 @@ public class Ball {
     public Ball(int x, int y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,0);
-        texture = new Texture("ball.png");
+        texture = new Texture("ballDebug.png");
         bounds = new Rectangle(x, y, 100, 100);
         maxPush = 300;
         friction = (float) 0.02;
@@ -68,8 +68,6 @@ public class Ball {
                 highestBrick = Math.max(highestBrick, brickCollision);
             }
         }
-
-
     }
 
     public void push(Vector2 initialTouch, Vector2 lastTouch, float gravity){
