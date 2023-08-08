@@ -22,7 +22,7 @@ public class Bricks {
     private final int MIN_WIDTH = 100;
 
     public Bricks(){
-        texture = new Texture("brickDebug.png");
+        texture = new Texture("brick.png");
         bricks = new ArrayList<>();
         rng = new Random();
         Brick firstBrick = new Brick(20, -200, 400, 40, 0, 1);
@@ -51,7 +51,10 @@ public class Bricks {
         int width = Math.max(rng.nextInt(maxWidth - maxWidth/2 + 1) + maxWidth/2, MIN_WIDTH);
         int x = rng.nextInt((880 - width) - 20 + 1) + 20;
         int height = 40;
-        int angle = 40;
+        boolean orientation = rng.nextBoolean();
+        int angle = rng.nextInt(50);
+        if (orientation)
+            angle = 180-angle;
 
 
         return new Brick(x, y, width, height, angle, brickHeight);
@@ -61,8 +64,8 @@ public class Bricks {
         for (Brick brick : bricks) {
             if (Intersector.overlapConvexPolygons(ballVertices(ball), brick.getShape())) {
                 System.out.println("Touching");
-                float ballCenterY = ball.y + ball.height / 2;
-                float brickTopY = brick.getY();
+                float ballCenterY = ball.y + ball.height;
+                float brickTopY = brick.getY() + brick.getHeight();
 
                 if (ballCenterY >= brickTopY) {
                     return brick.getBrickHeight();
@@ -118,5 +121,14 @@ public class Bricks {
         shapeRenderer.end();
 
         shapeRenderer.dispose(); // Remember to dispose of the ShapeRenderer after using it.
+    }
+
+    public float getBrickAngle(int brickHeight) {
+        for (Brick brick : bricks) {
+            if (brick.getBrickHeight() == brickHeight) {
+                return brick.getAngle();
+            }
+        }
+        return 0;
     }
 }

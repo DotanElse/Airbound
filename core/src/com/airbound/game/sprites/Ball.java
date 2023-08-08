@@ -1,6 +1,7 @@
 package com.airbound.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -20,7 +21,7 @@ public class Ball {
     public Ball(int x, int y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,0);
-        texture = new Texture("ballDebug.png");
+        texture = new Texture("ball.png");
         bounds = new Rectangle(x, y, 100, 100);
         maxPush = 300;
         friction = (float) 0.02;
@@ -56,15 +57,22 @@ public class Ball {
         }
 
     }
-    private void handleBrickCollision(Bricks bricks)
-    {
-        if(velocity.y < 0)
-        {
+    private void handleBrickCollision(Bricks bricks) {
+        if (velocity.y < 0) {
             int brickCollision = bricks.collisionCheck(bounds);
-            if(brickCollision > 0)
-            {
+            if (brickCollision > 0) {
                 maxJumps = 2;
-                velocity.set(velocity.x, -velocity.y);
+
+                // Get the brick's angle in radians
+                float brickAngleRadians = (float) Math.toRadians(bricks.getBrickAngle(brickCollision));
+
+                // Calculate new velocity direction based on brick's angle
+                float currentSpeed = velocity.len();
+                float newAngle = brickAngleRadians * 2 - velocity.angleRad(); // Reflect angle
+                Vector2 newVelocity = new Vector2(MathUtils.cos(newAngle), MathUtils.sin(newAngle)).nor().scl(currentSpeed);
+
+                velocity.set(newVelocity);
+
                 highestBrick = Math.max(highestBrick, brickCollision);
             }
         }

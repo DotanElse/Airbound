@@ -80,4 +80,8 @@ public class Brick {
     public int getBrickHeight() {
         return brickHeight;
     }
+
+    public float getAngle() {
+        return angle;
+    }
 }

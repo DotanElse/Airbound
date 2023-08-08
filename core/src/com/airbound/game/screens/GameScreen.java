@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         handleInput();
-        camera.position.y -= gravity/10 * delta;
+        camera.position.y -= gravity * delta;
         ball.update(delta, bricks);
         float ballY = camera.position.y + ball.getPosition().y;
         if (ballY < -100) {
