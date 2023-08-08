@@ -17,7 +17,6 @@ public class Ball {
     private int highestBrick;
     private static final float BALL_GRAVITY = -900f;
 
-
     public Ball(int x, int y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,0);
@@ -27,7 +26,6 @@ public class Ball {
         friction = (float) 0.02;
         maxJumps = 2;
         highestBrick = 0;
-
     }
 
     public void update(float dt, Bricks bricks){
@@ -48,14 +46,7 @@ public class Ball {
 
     private void handleWallCollision(){
         if(position.x < 0 || position.x > 900-bounds.width)
-        {
-            if(position.x < 0)
-                position.x = 20;
-            if(position.x > 900-bounds.width)
-                position.x = 900-bounds.width;
             velocity.set(-velocity.x, velocity.y);
-        }
-
     }
     private void handleBrickCollision(Bricks bricks) {
         if (velocity.y < 0) {
