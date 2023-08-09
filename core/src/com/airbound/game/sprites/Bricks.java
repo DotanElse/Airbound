@@ -52,7 +52,7 @@ public class Bricks {
         int x = rng.nextInt((880 - width) - 20 + 1) + 20;
         int height = 40;
         boolean orientation = rng.nextBoolean();
-        int angle = rng.nextInt(50);
+        int angle = rng.nextInt(40);
         if (orientation)
             angle = 180-angle;
 
@@ -87,41 +87,7 @@ public class Bricks {
     }
 
 
-    public float getBrickTopY(int brickHeight) {
-        for (Brick brick : bricks) {
-            if (brick.getBrickHeight() == brickHeight) {
-                return brick.getShape().getY() + brick.getHeight();
-            }
-        }
-        return 0;
-    }
 
-    public void debugRender(Rectangle ball) {
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setAutoShapeType(true); // This sets the shape type to "Filled" by default
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-        // Draw the bricks
-        shapeRenderer.setColor(Color.RED); // Set the color for the bricks
-        for (Brick brick : bricks) {
-            shapeRenderer.rect(brick.getShape().getX(), brick.getShape().getY(), brick.getWidth(), brick.getHeight());
-        }
-
-        // Draw the ball
-        shapeRenderer.setColor(Color.BLUE); // Set the color for the ball
-        shapeRenderer.rect(ball.x, ball.y, ball.width, ball.height);
-
-        // Draw the collided bricks in a different color (if any)
-        shapeRenderer.setColor(Color.GREEN);
-        for (Brick brick : bricks) {
-            shapeRenderer.rect(brick.getShape().getX(), brick.getShape().getY(), brick.getWidth(), brick.getHeight());
-        }
-
-        shapeRenderer.end();
-
-        shapeRenderer.dispose(); // Remember to dispose of the ShapeRenderer after using it.
-    }
 
     public float getBrickAngle(int brickHeight) {
         for (Brick brick : bricks) {

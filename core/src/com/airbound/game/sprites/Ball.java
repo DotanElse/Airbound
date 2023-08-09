@@ -34,13 +34,13 @@ public class Ball {
         // Apply friction to the velocity
 
         velocity.scl(1-friction*dt);
-        velocity.y += BALL_GRAVITY * dt;
+        if(!handleBrickCollision(bricks))
+            velocity.y += BALL_GRAVITY * dt;
         newPosition.mulAdd(velocity, dt);
         // Set the new position after applying friction
         position.set(newPosition);
         // check wall collision and reverse direction if needed
         handleWallCollision();
-        handleBrickCollision(bricks);
         bounds.setPosition(position.x, position.y);
     }
 
@@ -48,7 +48,7 @@ public class Ball {
         if(position.x < 0 || position.x > 900-bounds.width)
             velocity.set(-velocity.x, velocity.y);
     }
-    private void handleBrickCollision(Bricks bricks) {
+    private boolean handleBrickCollision(Bricks bricks) {
         if (velocity.y < 0) {
             int brickCollision = bricks.collisionCheck(bounds);
             if (brickCollision > 0) {
@@ -65,8 +65,10 @@ public class Ball {
                 velocity.set(newVelocity);
 
                 highestBrick = Math.max(highestBrick, brickCollision);
+                return true;
             }
         }
+        return false;
     }
 
     public void push(Vector2 initialTouch, Vector2 lastTouch, float gravity){
