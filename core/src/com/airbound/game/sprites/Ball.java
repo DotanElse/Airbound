@@ -3,26 +3,30 @@ package com.airbound.game.sprites;
 import com.airbound.game.GameConstants;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 
 public class Ball {
-    private Texture texture;
+    private TextureRegion texture;
     private Rectangle bounds;
     private Vector2 position;
     private Vector2 velocity;
     private int highestBrick;
     private int jumpsLeft;
+    private float rotationAngle;
 
     public Ball(int x, int y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,0);
-        texture = new Texture("ball.png");
+        texture = new TextureRegion(new Texture("ball.png"));
         bounds = new Rectangle(x, y, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
         highestBrick = 0;
         jumpsLeft = 2;
+        rotationAngle = 0;
     }
 
     public void update(float dt, Bricks bricks){
@@ -38,11 +42,12 @@ public class Ball {
         position.set(newPosition);
         // check wall collision and reverse direction if needed
         handleWallCollision();
+        rotationAngle -= velocity.x * GameConstants.BALL_SPIN;
         bounds.setPosition(position.x, position.y);
     }
 
     private void handleWallCollision(){
-        if(position.x < 0 || position.x > GameConstants.GAME_WIDTH -bounds.width)
+        if(position.x < GameConstants.WALL_SIZE || position.x+bounds.width > GameConstants.GAME_WIDTH - GameConstants.WALL_SIZE)
             velocity.set(-velocity.x, velocity.y);
     }
     private boolean handleBrickCollision(Bricks bricks) {
@@ -81,10 +86,12 @@ public class Ball {
         }
         pushVector.y += gravity/GameConstants.BALL_GRAVITY_NEGATION;
         velocity.set(pushVector.scl(GameConstants.BALL_GRAVITY_SCALE));
-
+    }
+    public void draw(SpriteBatch sb, float y) {
+        sb.draw(texture, position.x, y + position.y, GameConstants.BALL_SIZE/2, GameConstants.BALL_SIZE/2, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE, 1.0f, 1.0f, rotationAngle);
     }
 
-    public Texture getTexture() {
+    public TextureRegion getTexture() {
         return texture;
     }
 
@@ -100,6 +107,7 @@ public class Ball {
     }
 
     public void dispose(){
-        texture.dispose();
+        texture.getTexture().dispose();
     }
+
 }

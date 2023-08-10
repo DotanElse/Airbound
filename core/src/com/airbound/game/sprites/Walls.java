@@ -12,8 +12,8 @@ public class Walls {
     private int[] heights;
 
     public Walls(){
-        leftTexture = new Texture("wall_left.png");
-        rightTexture = new Texture("wall_right.png");
+        leftTexture = new Texture("wall.png");
+        rightTexture = new Texture("wall.png");
         parts = 1600/leftTexture.getHeight()+2;
         heights = new int[parts];
         for (int i = 0; i < parts; i++) {

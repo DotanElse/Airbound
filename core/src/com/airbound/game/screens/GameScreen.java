@@ -85,8 +85,7 @@ public class GameScreen implements Screen {
         background.draw(sb, camera.position.y);
         walls.draw(sb, camera.position.y);
         bricks.draw(sb, camera.position.y);
-
-        sb.draw(ball.getTexture(), ball.getPosition().x, ballY, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
+        ball.draw(sb, camera.position.y);
         sb.end();
         drawGui();
 
@@ -116,7 +115,7 @@ public class GameScreen implements Screen {
         background.draw(sb, camera.position.y);
         walls.draw(sb, camera.position.y);
         bricks.draw(sb, camera.position.y);
-        sb.draw(ball.getTexture(), ball.getPosition().x, ballY, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
+        ball.draw(sb, camera.position.y);
         sb.end();
         drawGui();
     }

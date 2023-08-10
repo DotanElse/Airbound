@@ -16,6 +16,7 @@ public class GameConstants {
     public static final float BALL_GRAVITY_SCALE = 3;
     public static final float BALL_GRAVITY_NEGATION = 12;
     public static final int BALL_PUSH_SIZE = 50;
+    public static final float BALL_SPIN = 0.05f;
 
 
     public static final int BRICK_HEIGHT = 40;
