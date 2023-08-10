@@ -1,6 +1,7 @@
 package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
+import com.airbound.game.GameConstants;
 import com.airbound.game.sprites.Background;
 import com.airbound.game.sprites.Ball;
 import com.airbound.game.sprites.Bricks;
@@ -17,8 +18,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 
 public class GameScreen implements Screen {
     private Airbound game;
@@ -40,26 +39,25 @@ public class GameScreen implements Screen {
 
     public GameScreen(Airbound game) {
         this.game = game;
-        System.out.println("0");
         sb = new SpriteBatch();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 900, 1600);
+        camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         guiCam = new OrthographicCamera();
-        guiCam.setToOrtho(false, 900, 1600);
-        viewport = new ExtendViewport(900, 1600, camera);
+        guiCam.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
+        viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         viewport.setCamera(camera);
-        gravity = 300;
+        gravity = GameConstants.GRAVITY;
         background = new Background();
         ballPush = new Texture("ballPush.png");
         walls = new Walls();
         bricks = new Bricks();
-        ball = new Ball(300, 300);
+        ball = new Ball(GameConstants.BALL_STARTING_X, GameConstants.BALL_STARTING_Y);
         isDragging = false; //game init with user not dragging
         initialTouch = new Vector2();
         lastTouch = new Vector2();
         gameEnded = false;
         font = new BitmapFont(); // default
-        font.getData().setScale(3f);
+        font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
 
     }
@@ -75,7 +73,7 @@ public class GameScreen implements Screen {
         camera.position.y -= gravity * delta;
         ball.update(delta, bricks);
         float ballY = camera.position.y + ball.getPosition().y;
-        if (ballY < -100) {
+        if (ballY < -GameConstants.BALL_SIZE) {
             game.setNewScore(ball.getHighestBrick());
             // The ball is not visible on the screen anymore, show the main menu screen
             game.showMainMenuScreen();
@@ -88,7 +86,7 @@ public class GameScreen implements Screen {
         walls.draw(sb, camera.position.y);
         bricks.draw(sb, camera.position.y);
 
-        sb.draw(ball.getTexture(), ball.getPosition().x, ballY, 100, 100);
+        sb.draw(ball.getTexture(), ball.getPosition().x, ballY, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
         sb.end();
         drawGui();
 
@@ -98,12 +96,12 @@ public class GameScreen implements Screen {
     {
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
-        font.draw(sb, "" + ball.getHighestBrick(), 20, 1600);
-        if(ball.getMaxJumps() >=1)
+        font.draw(sb, "" + ball.getHighestBrick(), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
+        if(ball.getJumpsLeft() >= 1)
         {
-            sb.draw(ballPush, 820, 1540, 50, 50);
-            if(ball.getMaxJumps() == 2)
-                sb.draw(ballPush, 770, 1540, 50, 50);
+            sb.draw(ballPush, GameConstants.GAME_WIDTH-GameConstants.BALL_PUSH_SIZE-30, GameConstants.GAME_HEIGHT-GameConstants.BALL_PUSH_SIZE-10, GameConstants.BALL_PUSH_SIZE, GameConstants.BALL_PUSH_SIZE);
+            if(ball.getJumpsLeft() == 2)
+                sb.draw(ballPush, GameConstants.GAME_WIDTH-GameConstants.BALL_PUSH_SIZE*2-30, GameConstants.GAME_HEIGHT-GameConstants.BALL_PUSH_SIZE-10, GameConstants.BALL_PUSH_SIZE, GameConstants.BALL_PUSH_SIZE);
         }
 
         sb.end();
@@ -118,7 +116,7 @@ public class GameScreen implements Screen {
         background.draw(sb, camera.position.y);
         walls.draw(sb, camera.position.y);
         bricks.draw(sb, camera.position.y);
-        sb.draw(ball.getTexture(), ball.getPosition().x, ballY, 100, 100);
+        sb.draw(ball.getTexture(), ball.getPosition().x, ballY, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
         sb.end();
         drawGui();
     }

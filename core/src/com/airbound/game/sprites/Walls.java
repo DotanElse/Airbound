@@ -1,5 +1,6 @@
 package com.airbound.game.sprites;
 
+import com.airbound.game.GameConstants;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -26,8 +27,8 @@ public class Walls {
         {
             if(-y > heights[i] + (leftTexture.getHeight()))
                 heights[i] += parts*(leftTexture.getHeight());
-            sb.draw(leftTexture, 0, heights[i]+y, 20, leftTexture.getHeight());
-            sb.draw(rightTexture, 880, heights[i]+y, 20, rightTexture.getHeight());
+            sb.draw(leftTexture, 0, heights[i]+y, GameConstants.WALL_SIZE, leftTexture.getHeight());
+            sb.draw(rightTexture, GameConstants.GAME_WIDTH-GameConstants.WALL_SIZE, heights[i]+y, GameConstants.WALL_SIZE, rightTexture.getHeight());
         }
     }
 

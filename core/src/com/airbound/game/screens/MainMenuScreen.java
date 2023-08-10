@@ -1,6 +1,7 @@
 package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
+import com.airbound.game.GameConstants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -30,14 +31,14 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         sb = new SpriteBatch();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 900, 1600);
+        camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         guiCam = new OrthographicCamera();
-        guiCam.setToOrtho(false, 900, 1600);
-        viewport = new ExtendViewport(900, 1600, camera);
+        guiCam.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
+        viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         background = new Texture("background.png");
         playButton = new Texture("playButton.png");
         font = new BitmapFont(); // default
-        font.getData().setScale(2.5f);
+        font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
     }
 
@@ -55,13 +56,13 @@ public class MainMenuScreen implements Screen {
         sb.begin();
         for(int i=0; i<6; i++)
         {
-            sb.draw(background, 0, (background.getHeight())*i-80, 900, background.getHeight());
+            sb.draw(background, 0, (background.getHeight())*i-80, GameConstants.GAME_WIDTH, background.getHeight());
         }
-        sb.draw(playButton, playButtonX, playButtonY, 175, 175);
+        sb.draw(playButton, playButtonX, playButtonY, GameConstants.PLAY_BUTTON_SIZE, GameConstants.PLAY_BUTTON_SIZE);
         sb.end();
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
-        font.draw(sb, "High Score: " + game.getPreferencesManager().getHighScore(), 20, 1600);
+        font.draw(sb, "High Score: " + game.getPreferencesManager().getHighScore(), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
         sb.end();
     }
 
@@ -74,10 +75,8 @@ public class MainMenuScreen implements Screen {
             float touchX = touchPos.x;
             float touchY = touchPos.y;
 
-            //System.out.println((touchX) + " " + touchY + " " + playButtonX + " " + playButtonY);
-
-            if (touchX >= playButtonX && touchX <= playButtonX + 175 &&
-                    touchY >= playButtonY && touchY <= playButtonY + 175) {
+            if (touchX >= playButtonX && touchX <= playButtonX + GameConstants.PLAY_BUTTON_SIZE &&
+                    touchY >= playButtonY && touchY <= playButtonY + GameConstants.PLAY_BUTTON_SIZE) {
                 game.showGameScreen();
             }
         }
@@ -86,8 +85,8 @@ public class MainMenuScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        playButtonX = (camera.viewportWidth - 175) / 2;
-        playButtonY = (camera.viewportHeight - 175) / 2;
+        playButtonX = (camera.viewportWidth - GameConstants.PLAY_BUTTON_SIZE) / 2;
+        playButtonY = (camera.viewportHeight - GameConstants.PLAY_BUTTON_SIZE) / 2;
     }
 
     @Override

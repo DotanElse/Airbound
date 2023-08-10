@@ -1,5 +1,7 @@
 package com.airbound.game.sprites;
 
+import com.airbound.game.GameConstants;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,21 +13,16 @@ public class Ball {
     private Rectangle bounds;
     private Vector2 position;
     private Vector2 velocity;
-    private float maxPush;
-    private float friction;
-    private int maxJumps;
     private int highestBrick;
-    private static final float BALL_GRAVITY = -900f;
+    private int jumpsLeft;
 
     public Ball(int x, int y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,0);
         texture = new Texture("ball.png");
-        bounds = new Rectangle(x, y, 100, 100);
-        maxPush = 300;
-        friction = (float) 0.02;
-        maxJumps = 2;
+        bounds = new Rectangle(x, y, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
         highestBrick = 0;
+        jumpsLeft = 2;
     }
 
     public void update(float dt, Bricks bricks){
@@ -33,9 +30,9 @@ public class Ball {
 
         // Apply friction to the velocity
 
-        velocity.scl(1-friction*dt);
+        velocity.scl(1-GameConstants.BALL_FRICTION*dt);
         if(!handleBrickCollision(bricks))
-            velocity.y += BALL_GRAVITY * dt;
+            velocity.y -= GameConstants.BALL_GRAVITY * dt;
         newPosition.mulAdd(velocity, dt);
         // Set the new position after applying friction
         position.set(newPosition);
@@ -45,14 +42,14 @@ public class Ball {
     }
 
     private void handleWallCollision(){
-        if(position.x < 0 || position.x > 900-bounds.width)
+        if(position.x < 0 || position.x > GameConstants.GAME_WIDTH -bounds.width)
             velocity.set(-velocity.x, velocity.y);
     }
     private boolean handleBrickCollision(Bricks bricks) {
         if (velocity.y < 0) {
             int brickCollision = bricks.collisionCheck(bounds);
             if (brickCollision > 0) {
-                maxJumps = 2;
+                jumpsLeft = GameConstants.MAX_JUMPS;
 
                 // Get the brick's angle in radians
                 float brickAngleRadians = (float) Math.toRadians(bricks.getBrickAngle(brickCollision));
@@ -72,18 +69,18 @@ public class Ball {
     }
 
     public void push(Vector2 initialTouch, Vector2 lastTouch, float gravity){
-        if(maxJumps == 0)
+        if(jumpsLeft == 0)
             return;
-        maxJumps--;
+        jumpsLeft--;
         Vector2 pushVector = initialTouch.sub(lastTouch);
         // Calculate the magnitude of the pushVector
         float magnitude = pushVector.len();
-        if (magnitude>maxPush)
+        if (magnitude>GameConstants.MAX_PUSH_STRENGTH)
         {
-            pushVector.scl(maxPush / magnitude);
+            pushVector.scl(GameConstants.MAX_PUSH_STRENGTH / magnitude);
         }
-        pushVector.y += gravity/7;
-        velocity.set(pushVector.scl(3));
+        pushVector.y += gravity/GameConstants.BALL_GRAVITY_NEGATION;
+        velocity.set(pushVector.scl(GameConstants.BALL_GRAVITY_SCALE));
 
     }
 
@@ -91,31 +88,15 @@ public class Ball {
         return texture;
     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
     public Vector2 getPosition() {
         return position;
-    }
-
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
     }
 
     public int getHighestBrick() {
         return highestBrick;
     }
-    public int getMaxJumps() {
-        return maxJumps;
+    public int getJumpsLeft() {
+        return jumpsLeft;
     }
 
     public void dispose(){

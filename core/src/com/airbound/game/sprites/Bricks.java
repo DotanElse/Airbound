@@ -1,10 +1,13 @@
 package com.airbound.game.sprites;
 
+import com.airbound.game.GameConstants;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -19,17 +22,18 @@ public class Bricks {
     private final Texture texture;
     private List<Brick> bricks;
     private Random rng;
-    private final int MIN_WIDTH = 100;
+    private int blockNum;
 
     public Bricks(){
         texture = new Texture("brick.png");
         bricks = new ArrayList<>();
         rng = new Random();
-        Brick firstBrick = new Brick(20, -200, 400, 40, 0, 1);
+        Brick firstBrick = new Brick(20, 0, 400, GameConstants.BRICK_HEIGHT, 0, 1);
         bricks.add(firstBrick);
-        for(int i=1; i<12; i++)
+        blockNum = MathUtils.ceil((float)GameConstants.GAME_HEIGHT/GameConstants.BRICK_GAP_SIZE)+1;
+        for(int i=1; i<blockNum; i++)
         {
-            bricks.add(createRandomBrick(i*500, i+1));
+            bricks.add(createRandomBrick(i*GameConstants.BRICK_GAP_SIZE, i+1));
         }
     }
     public void draw(SpriteBatch sb, float y)
@@ -39,7 +43,7 @@ public class Bricks {
             brick.draw(sb, texture, y);
             if(brick.getY()+brick.getHeight() < -y) // vision of the brick is gone
             {
-                Brick newBrick = createRandomBrick(-y+6000,  brick.getBrickHeight()+12);
+                Brick newBrick = createRandomBrick(-y+(blockNum * GameConstants.BRICK_GAP_SIZE),  brick.getBrickHeight()+blockNum); //Could have more precision if not using y values but calc manually.
                 brick.replace(newBrick);
             }
 
@@ -47,23 +51,20 @@ public class Bricks {
     }
 
     private Brick createRandomBrick(float y, int brickHeight) {
-        int maxWidth = 300 - brickHeight*3;
-        int width = Math.max(rng.nextInt(maxWidth - maxWidth/2 + 1) + maxWidth/2, MIN_WIDTH);
-        int x = rng.nextInt((880 - width) - 20 + 1) + 20;
-        int height = 40;
+        int maxWidth = GameConstants.BRICK_MAX_WIDTH - brickHeight*3;
+        int width = Math.max(rng.nextInt(maxWidth - maxWidth/2 + 1) + maxWidth/2, GameConstants.BRICK_MIN_WIDTH);
+        int x = rng.nextInt((GameConstants.GAME_WIDTH-GameConstants.WALL_SIZE - width) - GameConstants.WALL_SIZE + 1) + GameConstants.WALL_SIZE;
+        int height = GameConstants.BRICK_HEIGHT;
         boolean orientation = rng.nextBoolean();
-        int angle = rng.nextInt(40);
+        int angle = rng.nextInt(GameConstants.BRICK_MAX_ANGLE);
         if (orientation)
             angle = 180-angle;
-
-
         return new Brick(x, y, width, height, angle, brickHeight);
     }
 
     public int collisionCheck(Rectangle ball) {
         for (Brick brick : bricks) {
             if (Intersector.overlapConvexPolygons(ballVertices(ball), brick.getShape())) {
-                System.out.println("Touching");
                 float ballCenterY = ball.y + ball.height;
                 float brickTopY = brick.getY() + brick.getHeight();
 
@@ -72,7 +73,6 @@ public class Bricks {
                 }
             }
         }
-        System.out.println("Not touching");
         return 0;
     }
 

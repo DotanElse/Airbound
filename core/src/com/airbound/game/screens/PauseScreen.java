@@ -27,7 +27,6 @@ public class PauseScreen implements Screen {
         sb = new SpriteBatch();
         guiCam = new OrthographicCamera();
         guiCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        System.out.println(Gdx.graphics.getWidth());
         continueButtonX = (guiCam.viewportWidth - textureWidth) / 2;
         continueButtonY = (guiCam.viewportHeight - textureHeight) / 2;
     }

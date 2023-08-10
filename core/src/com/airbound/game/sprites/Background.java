@@ -1,5 +1,6 @@
 package com.airbound.game.sprites;
 
+import com.airbound.game.GameConstants;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -10,10 +11,10 @@ public class Background {
 
     public Background(){
         background = new Texture("background.png");
-        parts = 1600/background.getHeight()+2;
+        parts = GameConstants.GAME_HEIGHT/background.getHeight()+2;
         heights = new int[parts];
         for (int i = 0; i < parts; i++) {
-            heights[i] = (background.getHeight())*i-900;
+            heights[i] = (background.getHeight())*i- GameConstants.GAME_HEIGHT;
         }
     }
     public void draw(SpriteBatch sb, float y)
@@ -23,7 +24,7 @@ public class Background {
         {
             if(-y > heights[i] + (background.getHeight()))
                 heights[i] += parts*(background.getHeight());
-            sb.draw(background, 0, heights[i]+y, 900, background.getHeight());
+            sb.draw(background, 0, heights[i]+y, GameConstants.GAME_WIDTH, background.getHeight());
         }
     }
 
