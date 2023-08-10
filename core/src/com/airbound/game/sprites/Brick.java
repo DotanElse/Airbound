@@ -33,7 +33,7 @@ public class Brick {
     }
 
     public void draw(SpriteBatch batch, Texture texture, float cam) {
-        batch.draw(texture, x, y+cam, width / 2, height / 2, width, height, 1, 1, angle, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+        batch.draw(texture, x, y+cam, width / 2, height / 2, width, height, 1, 1, angle, 0, 0, texture.getWidth(), texture.getHeight(), false, angle>90);
     }
 
     public Polygon getShape() {
