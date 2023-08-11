@@ -18,10 +18,10 @@ public class GameConstants {
     public static final int BALL_PUSH_SIZE = 50;
     public static final float BALL_SPIN = 0.05f;
 
+    public static final int WALL_SIZE = 20;
 
     public static final int BRICK_HEIGHT = 40;
-    public static final int BRICK_GAP_SIZE = 500;
-    public static final int WALL_SIZE = 20;
+    public static final int BRICK_GAP_SIZE = 700;
     public static final int BRICK_MIN_WIDTH = 100;
     public static final int BRICK_MAX_WIDTH = 300;
     public static final int BRICK_MAX_ANGLE = 38;
