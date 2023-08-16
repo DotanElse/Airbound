@@ -24,6 +24,7 @@ public class MainMenuScreen implements Screen {
     private SpriteBatch sb;
     private float playButtonX;
     private float playButtonY;
+    private Texture settingButton;
     private BitmapFont font;
 
 
@@ -35,8 +36,10 @@ public class MainMenuScreen implements Screen {
         guiCam = new OrthographicCamera();
         guiCam.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
+        viewport.setCamera(camera);
         background = new Texture("background.png");
         playButton = new Texture("playButton.png");
+        settingButton = new Texture("buttonDebug.png");
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
@@ -63,6 +66,8 @@ public class MainMenuScreen implements Screen {
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
         font.draw(sb, "High Score: " + game.getPreferencesManager().getHighScore(), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
+        sb.draw(settingButton, GameConstants.GAME_WIDTH-GameConstants.SETTING_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.SETTING_BUTTON_SIZE,
+                GameConstants.SETTING_BUTTON_SIZE, GameConstants.SETTING_BUTTON_SIZE);
         sb.end();
     }
 
@@ -70,7 +75,10 @@ public class MainMenuScreen implements Screen {
         if (Gdx.input.justTouched()) {
             // Unproject touch coordinates based on the camera's projection matrix
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            Vector3 guiTouchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            guiCam.unproject(guiTouchPos);
             camera.unproject(touchPos);
+            System.out.println(guiTouchPos);
 
             float touchX = touchPos.x;
             float touchY = touchPos.y;
@@ -78,6 +86,12 @@ public class MainMenuScreen implements Screen {
             if (touchX >= playButtonX && touchX <= playButtonX + GameConstants.PLAY_BUTTON_SIZE &&
                     touchY >= playButtonY && touchY <= playButtonY + GameConstants.PLAY_BUTTON_SIZE) {
                 game.showGameScreen();
+            }
+            if (guiTouchPos.x >= GameConstants.GAME_WIDTH-GameConstants.SETTING_BUTTON_SIZE &&
+            guiTouchPos.y >= GameConstants.GAME_HEIGHT-GameConstants.SETTING_BUTTON_SIZE)
+            {
+                game.showSettingsScreen();
+
             }
         }
     }

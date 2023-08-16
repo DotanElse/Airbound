@@ -3,6 +3,7 @@ package com.airbound.game;
 import com.airbound.game.screens.GameScreen;
 import com.airbound.game.screens.MainMenuScreen;
 import com.airbound.game.screens.PauseScreen;
+import com.airbound.game.screens.SettingScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,6 +12,7 @@ public class Airbound extends Game {
 	private MainMenuScreen mainMenuScreen;
 	private PauseScreen pauseScreen;
 	private GameScreen gameScreen;
+	private SettingScreen settingScreen;
 	private PreferencesManager preferencesManager;
 	private boolean paused;
 
@@ -19,6 +21,7 @@ public class Airbound extends Game {
 		mainMenuScreen = new MainMenuScreen(this);
 		gameScreen = new GameScreen(this);
 		pauseScreen = new PauseScreen(this, gameScreen);
+		settingScreen = new SettingScreen(this);
 		preferencesManager = new PreferencesManager();
 		this.setScreen(mainMenuScreen);
 	}
@@ -33,6 +36,9 @@ public class Airbound extends Game {
 		setScreen(mainMenuScreen);
 	}
 
+	public void showSettingsScreen() {
+		setScreen(settingScreen);
+	}
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -40,13 +46,13 @@ public class Airbound extends Game {
 		// Call the super method to render the active screen
 		super.render();
 	}
+
 	@Override
 	public void pause() {
 		super.pause();
 		paused = true;
 		setScreen(pauseScreen);
 	}
-
 	@Override
 	public void resume() {
 		super.resume();
@@ -54,6 +60,7 @@ public class Airbound extends Game {
 			return;
 		setScreen(gameScreen);
 	}
+
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
