@@ -6,6 +6,7 @@ import com.airbound.game.sprites.Background;
 import com.airbound.game.sprites.Ball;
 import com.airbound.game.sprites.Bricks;
 import com.airbound.game.sprites.Walls;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -36,6 +37,7 @@ public class GameScreen implements Screen {
     private float gravity;
     private boolean gameEnded;
     private BitmapFont font;
+    private Texture pauseButton;
 
     public GameScreen(Airbound game) {
         this.game = game;
@@ -49,6 +51,7 @@ public class GameScreen implements Screen {
         gravity = GameConstants.GRAVITY;
         background = new Background();
         ballPush = new Texture("ballPush.png");
+        pauseButton = new Texture("pause.png");
         walls = new Walls();
         bricks = new Bricks();
         ball = new Ball(GameConstants.BALL_STARTING_X, GameConstants.BALL_STARTING_Y);
@@ -87,21 +90,24 @@ public class GameScreen implements Screen {
         bricks.draw(sb, camera.position.y);
         ball.draw(sb, camera.position.y);
         sb.end();
-        drawGui();
+        drawGui(false);
 
     }
 
-    public void drawGui()
+    public void drawGui(Boolean paused)
     {
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
+        if(!paused)
+            sb.draw(pauseButton, (GameConstants.GAME_WIDTH-GameConstants.PAUSE_BUTTON_SIZE)-GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT-GameConstants.PAUSE_BUTTON_SIZE, GameConstants.PAUSE_BUTTON_SIZE, GameConstants.PAUSE_BUTTON_SIZE);
         font.draw(sb, "" + ball.getHighestBrick(), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
         if(ball.getJumpsLeft() >= 1)
         {
-            sb.draw(ballPush, GameConstants.GAME_WIDTH-GameConstants.BALL_PUSH_SIZE-30, GameConstants.GAME_HEIGHT-GameConstants.BALL_PUSH_SIZE-10, GameConstants.BALL_PUSH_SIZE, GameConstants.BALL_PUSH_SIZE);
+            sb.draw(ballPush, GameConstants.GAME_WIDTH-GameConstants.BALL_PUSH_SIZE-30, 5, GameConstants.BALL_PUSH_SIZE, GameConstants.BALL_PUSH_SIZE);
             if(ball.getJumpsLeft() == 2)
-                sb.draw(ballPush, GameConstants.GAME_WIDTH-GameConstants.BALL_PUSH_SIZE*2-30, GameConstants.GAME_HEIGHT-GameConstants.BALL_PUSH_SIZE-10, GameConstants.BALL_PUSH_SIZE, GameConstants.BALL_PUSH_SIZE);
+                sb.draw(ballPush, GameConstants.GAME_WIDTH-GameConstants.BALL_PUSH_SIZE*2-30, 5, GameConstants.BALL_PUSH_SIZE, GameConstants.BALL_PUSH_SIZE);
         }
+
 
         sb.end();
     }
@@ -117,29 +123,45 @@ public class GameScreen implements Screen {
         bricks.draw(sb, camera.position.y);
         ball.draw(sb, camera.position.y);
         sb.end();
-        drawGui();
+        drawGui(true);
     }
 
-
+    private boolean isPauseButtonTouched(float x, float y) {
+        return (x > GameConstants.GAME_WIDTH-GameConstants.WALL_SIZE-GameConstants.PAUSE_BUTTON_SIZE &&
+                y > GameConstants.GAME_HEIGHT-GameConstants.PAUSE_BUTTON_SIZE);
+    }
     private void handleInput() {
         Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        Vector3 guiTouchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        guiCam.unproject(guiTouchPos);
+        if (Gdx.input.justTouched()) {
+            if(isPauseButtonTouched(guiTouchPos.x, guiTouchPos.y))
+            {
+                game.pause();
+                return;
+            }
+        }
         camera.unproject(touchPos);
-        if (Gdx.input.justTouched() && !isDragging)
-        {
+
+        if (Gdx.input.justTouched() && !isDragging) {
             // Initial touch event
-            initialTouch.set(touchPos.x, touchPos.y);
-            isDragging = true;
+                initialTouch.set(touchPos.x, touchPos.y);
+                isDragging = true;
         }
 
         if (Gdx.input.isTouched() && isDragging) {
             // Touch-dragged event
             lastTouch.set(touchPos.x, touchPos.y);
         }
-        if(!Gdx.input.isTouched() && isDragging) {
+
+        if (!Gdx.input.isTouched() && isDragging) {
+            // Lift event
             ball.push(initialTouch, lastTouch, gravity);
             isDragging = false;
         }
     }
+
+
 
     @Override
     public void resize(int width, int height) {
