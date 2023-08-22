@@ -2,6 +2,7 @@ package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
 import com.airbound.game.GameConstants;
+import com.airbound.game.GameUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -78,20 +79,11 @@ public class MainMenuScreen implements Screen {
             Vector3 guiTouchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             guiCam.unproject(guiTouchPos);
             camera.unproject(touchPos);
-            System.out.println(guiTouchPos);
 
-            float touchX = touchPos.x;
-            float touchY = touchPos.y;
-
-            if (touchX >= playButtonX && touchX <= playButtonX + GameConstants.PLAY_BUTTON_SIZE &&
-                    touchY >= playButtonY && touchY <= playButtonY + GameConstants.PLAY_BUTTON_SIZE) {
+            if(GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.PLAY_BUTTON_SIZE, playButtonX, playButtonY))
                 game.showGameScreen();
-            }
-            if (guiTouchPos.x >= GameConstants.GAME_WIDTH-GameConstants.SETTING_BUTTON_SIZE &&
-            guiTouchPos.y >= GameConstants.GAME_HEIGHT-GameConstants.SETTING_BUTTON_SIZE)
-            {
+            if(GameUtils.InputTouch(guiTouchPos.x, guiTouchPos.y, GameConstants.SETTING_BUTTON_SIZE, GameConstants.GAME_WIDTH-GameConstants.SETTING_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.SETTING_BUTTON_SIZE))
                 game.showSettingsScreen();
-            }
         }
     }
 

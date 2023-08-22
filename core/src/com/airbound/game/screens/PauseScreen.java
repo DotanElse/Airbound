@@ -1,6 +1,8 @@
 package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
+import com.airbound.game.GameConstants;
+import com.airbound.game.GameUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,8 +19,7 @@ public class PauseScreen implements Screen {
     private OrthographicCamera guiCam;
     float continueButtonX;
     float continueButtonY;
-    float textureWidth = 200;
-    float textureHeight = 200;
+
 
     public PauseScreen(Airbound game, GameScreen gameScreen) {
         this.game = game;
@@ -27,8 +28,8 @@ public class PauseScreen implements Screen {
         sb = new SpriteBatch();
         guiCam = new OrthographicCamera();
         guiCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        continueButtonX = (guiCam.viewportWidth - textureWidth) / 2;
-        continueButtonY = (guiCam.viewportHeight - textureHeight) / 2;
+        continueButtonX = (guiCam.viewportWidth - GameConstants.CONTINUE_BUTTON_SIZE) / 2;
+        continueButtonY = (guiCam.viewportHeight - GameConstants.CONTINUE_BUTTON_SIZE) / 2;
     }
 
     @Override
@@ -41,11 +42,9 @@ public class PauseScreen implements Screen {
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             guiCam.unproject(touchPos);
-            float touchX = touchPos.x;
-            float touchY = touchPos.y;
 
-            if (touchX >= continueButtonX && touchX <= continueButtonX + textureWidth &&
-                    touchY >= continueButtonY && touchY <= continueButtonY + textureHeight) {
+            if(GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.CONTINUE_BUTTON_SIZE, continueButtonX, continueButtonY))
+            {
                 game.setPaused(false);
                 game.resume();
             }
@@ -53,15 +52,15 @@ public class PauseScreen implements Screen {
 
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
-        sb.draw(continueButton, continueButtonX, continueButtonY, textureWidth, textureHeight);
+        sb.draw(continueButton, continueButtonX, continueButtonY, GameConstants.CONTINUE_BUTTON_SIZE, GameConstants.CONTINUE_BUTTON_SIZE);
         sb.end();
     }
 
     @Override
     public void resize(int width, int height) {
         guiCam.setToOrtho(false, width, height);
-        continueButtonX = (guiCam.viewportWidth - textureWidth) / 2;
-        continueButtonY = (guiCam.viewportHeight - textureHeight) / 2;
+        continueButtonX = (guiCam.viewportWidth - GameConstants.CONTINUE_BUTTON_SIZE) / 2;
+        continueButtonY = (guiCam.viewportHeight - GameConstants.CONTINUE_BUTTON_SIZE) / 2;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
 import com.airbound.game.GameConstants;
+import com.airbound.game.GameUtils;
 import com.airbound.game.sprites.Background;
 import com.airbound.game.sprites.Ball;
 import com.airbound.game.sprites.Bricks;
@@ -107,13 +108,10 @@ public class GameScreen implements Screen {
             if(ball.getJumpsLeft() == 2)
                 sb.draw(ballPush, GameConstants.GAME_WIDTH-GameConstants.BALL_PUSH_SIZE*2-30, 5, GameConstants.BALL_PUSH_SIZE, GameConstants.BALL_PUSH_SIZE);
         }
-
-
         sb.end();
     }
 
     public void renderFrozenElements() {
-        float ballY = camera.position.y + ball.getPosition().y;
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.setProjectionMatrix(camera.combined);
@@ -126,16 +124,12 @@ public class GameScreen implements Screen {
         drawGui(true);
     }
 
-    private boolean isPauseButtonTouched(float x, float y) {
-        return (x > GameConstants.GAME_WIDTH-GameConstants.WALL_SIZE-GameConstants.PAUSE_BUTTON_SIZE &&
-                y > GameConstants.GAME_HEIGHT-GameConstants.PAUSE_BUTTON_SIZE);
-    }
     private void handleInput() {
         Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         Vector3 guiTouchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         guiCam.unproject(guiTouchPos);
         if (Gdx.input.justTouched()) {
-            if(isPauseButtonTouched(guiTouchPos.x, guiTouchPos.y))
+            if(GameUtils.InputTouch(guiTouchPos.x, guiTouchPos.y, GameConstants.PAUSE_BUTTON_SIZE, (GameConstants.GAME_WIDTH-GameConstants.PAUSE_BUTTON_SIZE)-GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT-GameConstants.PAUSE_BUTTON_SIZE))
             {
                 game.pause();
                 return;
