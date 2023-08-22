@@ -6,6 +6,7 @@ import com.badlogic.gdx.Preferences;
 public class PreferencesManager {
     private static final String PREFERENCES_NAME = "AirboundPreferences";
     private static final String HIGH_SCORE = "HighScore";
+    private static final String DIFF = "Difficulty";
     private static final String SOUND_ON = "SoundOn";
 
     private Preferences preferences;
@@ -16,6 +17,14 @@ public class PreferencesManager {
 
     public int getHighScore() {
         return preferences.getInteger(HIGH_SCORE, 0);
+    }
+
+    public int getDifficulty() { return preferences.getInteger(DIFF, 0);}
+
+    public void setDifficulty(int diff)
+    {
+        preferences.putInteger(DIFF, diff);
+        preferences.flush();
     }
 
     public void setHighScore(int score) {

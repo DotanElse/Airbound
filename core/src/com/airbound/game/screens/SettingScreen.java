@@ -2,6 +2,7 @@ package com.airbound.game.screens;
 
 import com.airbound.game.Airbound;
 import com.airbound.game.GameConstants;
+import com.airbound.game.GameUtils;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -54,6 +55,11 @@ public class SettingScreen implements Screen {
             sb.draw(background, 0, (background.getHeight())*i-80, GameConstants.GAME_WIDTH, background.getHeight());
         }
         sb.draw(returnButton, 0, GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE, GameConstants.RETURN_BUTTON_SIZE, GameConstants.RETURN_BUTTON_SIZE);
+        sb.draw(returnButton, (GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE)/2, GameConstants.GAME_HEIGHT-3*GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
+        sb.draw(returnButton, (GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE)/2, GameConstants.GAME_HEIGHT-5*GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
+        sb.draw(returnButton, (GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE)/2, GameConstants.GAME_HEIGHT-7*GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
+        sb.draw(returnButton, (GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE)/2, GameConstants.GAME_HEIGHT-9*GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
+        font.draw(sb, "difficulty: " + game.getPreferencesManager().getDifficulty(), GameConstants.GAME_WIDTH/2, GameConstants.GAME_HEIGHT);
         sb.end();
     }
 
@@ -61,10 +67,24 @@ public class SettingScreen implements Screen {
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            System.out.println(touchPos);
-            if (touchPos.x <= GameConstants.RETURN_BUTTON_SIZE && touchPos.y >= GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE)
+            if (GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.RETURN_BUTTON_SIZE, 0, GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE))
                 game.showMainMenuScreen();
+            TouchDifficulty(touchPos);
+
+//            if (touchPos.x <= GameConstants.RETURN_BUTTON_SIZE && touchPos.y >= GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE)
         }
+    }
+
+    private void TouchDifficulty(Vector3 touchPos) {
+        if(GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.DIFFICULTY_BUTTON_SIZE, (GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE)/2, GameConstants.GAME_HEIGHT-3*GameConstants.DIFFICULTY_BUTTON_SIZE))
+            game.getPreferencesManager().setDifficulty(1);
+        if(GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.DIFFICULTY_BUTTON_SIZE, (GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE)/2, GameConstants.GAME_HEIGHT-5*GameConstants.DIFFICULTY_BUTTON_SIZE))
+            game.getPreferencesManager().setDifficulty(2);
+
+        if(GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.DIFFICULTY_BUTTON_SIZE, (GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE)/2, GameConstants.GAME_HEIGHT-7*GameConstants.DIFFICULTY_BUTTON_SIZE))
+            game.getPreferencesManager().setDifficulty(3);
+        if(GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.DIFFICULTY_BUTTON_SIZE, (GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE)/2, GameConstants.GAME_HEIGHT-9*GameConstants.DIFFICULTY_BUTTON_SIZE))
+            game.getPreferencesManager().setDifficulty(4);
     }
 
     @Override

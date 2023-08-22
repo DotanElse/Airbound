@@ -91,7 +91,6 @@ public class MainMenuScreen implements Screen {
             guiTouchPos.y >= GameConstants.GAME_HEIGHT-GameConstants.SETTING_BUTTON_SIZE)
             {
                 game.showSettingsScreen();
-
             }
         }
     }
