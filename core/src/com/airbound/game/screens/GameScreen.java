@@ -39,9 +39,11 @@ public class GameScreen implements Screen {
     private boolean gameEnded;
     private BitmapFont font;
     private Texture pauseButton;
+    private int difficulty;
 
-    public GameScreen(Airbound game) {
+    public GameScreen(Airbound game, int difficulty) {
         this.game = game;
+        this.difficulty = difficulty;
         sb = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
