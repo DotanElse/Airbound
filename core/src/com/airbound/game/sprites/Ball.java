@@ -34,15 +34,15 @@ public class Ball {
 
         // Apply friction to the velocity
 
-        velocity.scl(1-GameConstants.BALL_FRICTION*dt);
+        velocity.scl(1-GameConstants.BALL_FRICTION*dt*GameConstants.GAME_SPEED);
         if(!handleBrickCollision(bricks))
-            velocity.y -= GameConstants.BALL_GRAVITY * dt;
+            velocity.y -= (GameConstants.BALL_GRAVITY_FACTOR * GameConstants.GRAVITY * GameConstants.GAME_SPEED * dt);
         newPosition.mulAdd(velocity, dt);
         // Set the new position after applying friction
         position.set(newPosition);
         // check wall collision and reverse direction if needed
         handleWallCollision();
-        rotationAngle -= velocity.x * GameConstants.BALL_SPIN;
+        rotationAngle -= velocity.x * GameConstants.BALL_SPIN  * GameConstants.GAME_SPEED;
         bounds.setPosition(position.x, position.y);
     }
 
@@ -73,7 +73,7 @@ public class Ball {
         return false;
     }
 
-    public void push(Vector2 initialTouch, Vector2 lastTouch, float gravity){
+    public void push(Vector2 initialTouch, Vector2 lastTouch){
         if(jumpsLeft == 0)
             return;
         jumpsLeft--;
@@ -84,8 +84,8 @@ public class Ball {
         {
             pushVector.scl(GameConstants.MAX_PUSH_STRENGTH / magnitude);
         }
-        pushVector.y += gravity/GameConstants.BALL_GRAVITY_NEGATION;
-        velocity.set(pushVector.scl(GameConstants.BALL_GRAVITY_SCALE));
+        pushVector.y += GameConstants.GRAVITY/GameConstants.BALL_GRAVITY_NEGATION*GameConstants.GAME_SPEED;
+        velocity.set(pushVector.scl(GameConstants.BALL_GRAVITY_SCALE*GameConstants.GAME_SPEED));
     }
     public void draw(SpriteBatch sb, float y) {
         sb.draw(texture, position.x, y + position.y, GameConstants.BALL_SIZE/2, GameConstants.BALL_SIZE/2, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE, 1.0f, 1.0f, rotationAngle);

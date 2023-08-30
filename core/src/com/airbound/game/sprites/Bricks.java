@@ -30,10 +30,10 @@ public class Bricks {
         rng = new Random();
         Brick firstBrick = new Brick(20, 0, 400, GameConstants.BRICK_HEIGHT, 0, 1);
         bricks.add(firstBrick);
-        blockNum = MathUtils.ceil((float)GameConstants.GAME_HEIGHT/GameConstants.BRICK_GAP_SIZE)+1;
+        blockNum = MathUtils.ceil((float)GameConstants.GAME_HEIGHT/(GameConstants.BRICK_GAP_SIZE * GameConstants.GAME_SPEED))+1;
         for(int i=1; i<blockNum; i++)
         {
-            bricks.add(createRandomBrick(i*GameConstants.BRICK_GAP_SIZE, i+1));
+            bricks.add(createRandomBrick(i*(GameConstants.BRICK_GAP_SIZE * GameConstants.GAME_SPEED), i+1));
         }
     }
     public void draw(SpriteBatch sb, float y)
@@ -43,10 +43,9 @@ public class Bricks {
             brick.draw(sb, texture, y);
             if(brick.getY()+brick.getHeight() < -y) // vision of the brick is gone
             {
-                Brick newBrick = createRandomBrick(-y+(blockNum * GameConstants.BRICK_GAP_SIZE),  brick.getBrickHeight()+blockNum); //Could have more precision if not using y values but calc manually.
+                Brick newBrick = createRandomBrick(-y+(blockNum * (GameConstants.BRICK_GAP_SIZE * GameConstants.GAME_SPEED)),  brick.getBrickHeight()+blockNum); //Could have more precision if not using y values but calc manually.
                 brick.replace(newBrick);
             }
-
         }
     }
 

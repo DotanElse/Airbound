@@ -1,5 +1,6 @@
 package com.airbound.game.sprites;
 
+import com.airbound.game.GameConstants;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
@@ -33,7 +34,14 @@ public class Brick {
     }
 
     public void draw(SpriteBatch batch, Texture texture, float cam) {
+        if(GameConstants.GAME_SPEED == 1.4f)
+        {
+            float opacity = (y+cam) /GameConstants.GAME_HEIGHT;
+            batch.setColor(1, 1, 1, opacity);
+        }
+
         batch.draw(texture, x, y+cam, width / 2, height / 2, width, height, 1, 1, angle, 0, 0, texture.getWidth(), texture.getHeight(), false, angle>90);
+        batch.setColor(1, 1, 1, 1);
     }
 
     public Polygon getShape() {

@@ -39,11 +39,10 @@ public class GameScreen implements Screen {
     private boolean gameEnded;
     private BitmapFont font;
     private Texture pauseButton;
-    private int difficulty;
 
     public GameScreen(Airbound game, int difficulty) {
         this.game = game;
-        this.difficulty = difficulty;
+        SetGameSpeed(difficulty);
         sb = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
@@ -68,6 +67,15 @@ public class GameScreen implements Screen {
 
     }
 
+    private void SetGameSpeed(int difficulty) {
+        if(difficulty == 4)
+        {
+            GameConstants.GAME_SPEED = 1.4f;
+        }
+        else
+            GameConstants.GAME_SPEED = 0.7f + (float) (difficulty * 0.3);
+    }
+
     @Override
     public void show() {
         viewport.apply();
@@ -76,7 +84,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         handleInput();
-        camera.position.y -= gravity * delta;
+        camera.position.y -= gravity * delta * GameConstants.GAME_SPEED;
         ball.update(delta, bricks);
         float ballY = camera.position.y + ball.getPosition().y;
         if (ballY < -GameConstants.BALL_SIZE) {
@@ -152,7 +160,7 @@ public class GameScreen implements Screen {
 
         if (!Gdx.input.isTouched() && isDragging) {
             // Lift event
-            ball.push(initialTouch, lastTouch, gravity);
+            ball.push(initialTouch, lastTouch);
             isDragging = false;
         }
     }
@@ -169,14 +177,6 @@ public class GameScreen implements Screen {
 
         // Apply the new camera position
         camera.position.set(viewport.getWorldWidth() / 2, cameraYBeforeResize, 0);
-//
-//        viewport.update(width, height, true);
-//
-//        // Calculate the ratio of the old height to the new height
-//        float heightRatio = (float) height / viewport.getWorldHeight();
-//
-//        // Update the camera position to maintain the focus on the same point
-//        camera.position.y *= heightRatio;
     }
 
     @Override
