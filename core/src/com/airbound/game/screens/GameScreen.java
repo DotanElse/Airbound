@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
         if (ballY < -GameConstants.BALL_SIZE) {
             game.setNewScore(ball.getHighestBrick());
             // The ball is not visible on the screen anymore, show the main menu screen
-            game.showMainMenuScreen();
+            game.showMainMenuScreen(ball.getHighestBrick());
         }
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

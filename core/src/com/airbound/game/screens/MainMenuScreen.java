@@ -27,10 +27,12 @@ public class MainMenuScreen implements Screen {
     private float playButtonY;
     private Texture settingButton;
     private BitmapFont font;
+    private int lastScore;
 
 
-    public MainMenuScreen(Airbound game) {
+    public MainMenuScreen(Airbound game, int lastScore) {
         this.game = game;
+        this.lastScore = lastScore;
         sb = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
@@ -66,7 +68,8 @@ public class MainMenuScreen implements Screen {
         sb.end();
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
-        font.draw(sb, "High Score: " + game.getPreferencesManager().getHighScore(), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
+        font.draw(sb, Integer.toString(lastScore), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
+        font.draw(sb, "High Score: " + game.getPreferencesManager().getHighScore(), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT-font.getLineHeight());
         sb.draw(settingButton, GameConstants.GAME_WIDTH-GameConstants.SETTING_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.SETTING_BUTTON_SIZE,
                 GameConstants.SETTING_BUTTON_SIZE, GameConstants.SETTING_BUTTON_SIZE);
         sb.end();

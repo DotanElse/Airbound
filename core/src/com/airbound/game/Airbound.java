@@ -19,18 +19,16 @@ public class Airbound extends Game {
 	@Override
 	public void create () {
 		preferencesManager = new PreferencesManager();
-		mainMenuScreen = new MainMenuScreen(this);
-		gameScreen = new GameScreen(this, preferencesManager.getDifficulty());
-		pauseScreen = new PauseScreen(this, gameScreen);
 		settingScreen = new SettingScreen(this);
-		this.setScreen(mainMenuScreen);
+		this.showMainMenuScreen(0);
 	}
 
 	public void showGameScreen() {
 		setScreen(gameScreen);
 	}
 
-	public void showMainMenuScreen() {
+	public void showMainMenuScreen(int score) {
+		mainMenuScreen = new MainMenuScreen(this, score);
 		gameScreen = new GameScreen(this, preferencesManager.getDifficulty());
 		pauseScreen = new PauseScreen(this, gameScreen);
 		setScreen(mainMenuScreen);
