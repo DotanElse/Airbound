@@ -1,6 +1,7 @@
 package com.airbound.game.sprites;
 
 import com.airbound.game.GameConstants;
+import com.airbound.game.GameUtils;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -63,7 +64,7 @@ public class Bricks {
 
     public int collisionCheck(Rectangle ball) {
         for (Brick brick : bricks) {
-            if (Intersector.overlapConvexPolygons(ballVertices(ball), brick.getShape())) {
+            if (Intersector.overlapConvexPolygons(GameUtils.ballVertices(ball), brick.getShape())) {
                 float ballCenterY = ball.y + ball.height;
                 float brickTopY = brick.getY() + brick.getHeight();
 
@@ -73,16 +74,6 @@ public class Bricks {
             }
         }
         return 0;
-    }
-
-    private Polygon ballVertices(Rectangle ball) {
-        float[] vertices = {
-                ball.x, ball.y,
-                ball.x + ball.width, ball.y,
-                ball.x + ball.width, ball.y + ball.height,
-                ball.x, ball.y + ball.height
-        };
-        return new Polygon(vertices);
     }
 
 

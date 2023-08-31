@@ -1,11 +1,13 @@
 package com.airbound.game.sprites;
 
 import com.airbound.game.GameConstants;
-import com.badlogic.gdx.Game;
+import com.airbound.game.GameUtils;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -29,7 +31,7 @@ public class Ball {
         rotationAngle = 0;
     }
 
-    public void update(float dt, Bricks bricks){
+    public void update(float dt, Bricks bricks, Coin coin){
         Vector2 newPosition = new Vector2(position);
 
         // Apply friction to the velocity
@@ -42,8 +44,17 @@ public class Ball {
         position.set(newPosition);
         // check wall collision and reverse direction if needed
         handleWallCollision();
+        handleCoinCollision(coin);
         rotationAngle -= velocity.x * GameConstants.BALL_SPIN  * GameConstants.GAME_SPEED;
         bounds.setPosition(position.x, position.y);
+    }
+
+    private void handleCoinCollision(Coin coin) {
+        if(Intersector.overlapConvexPolygons(GameUtils.ballVertices(bounds), coin.getShape()))
+        {
+            coin.incCoinCounter();
+            coin.replace();
+        }
     }
 
     private void handleWallCollision(){

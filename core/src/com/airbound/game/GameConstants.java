@@ -33,4 +33,6 @@ public class GameConstants {
     public static final int RETURN_BUTTON_SIZE = 150;
     public static final int DIFFICULTY_BUTTON_SIZE = 150;
     public static final int CONTINUE_BUTTON_SIZE = 200;
+
+    public static final int COIN_SIZE = 80;
 }
