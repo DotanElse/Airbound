@@ -7,6 +7,8 @@ public class PreferencesManager {
     private static final String PREFERENCES_NAME = "AirboundPreferences";
     private static final String HIGH_SCORE = "HighScore";
     private static final String DIFF = "Difficulty";
+    private static final String HARDCORE = "Hardcore";
+    private static final String FADE = "Fade";
     private static final String SOUND_ON = "SoundOn";
 
     private Preferences preferences;
@@ -20,6 +22,10 @@ public class PreferencesManager {
     }
 
     public int getDifficulty() { return preferences.getInteger(DIFF, 0);}
+
+    public boolean getHardcore() { return preferences.getBoolean(HARDCORE, false);}
+
+    public boolean getFade() { return preferences.getBoolean(FADE, false);}
 
     public void setDifficulty(int diff)
     {
@@ -39,5 +45,13 @@ public class PreferencesManager {
         preferences.flush();
     }
 
+    public void toggleHardcore() {
+        preferences.putBoolean(HARDCORE, !getHardcore());
+        preferences.flush();
+    }
+    public void toggleFade() {
+        preferences.putBoolean(FADE, !getFade());
+        preferences.flush();
+    }
 }
 

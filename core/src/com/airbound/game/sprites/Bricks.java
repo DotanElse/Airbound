@@ -37,11 +37,11 @@ public class Bricks {
             bricks.add(createRandomBrick(i*(GameConstants.BRICK_GAP_SIZE * GameConstants.GAME_SPEED), i+1));
         }
     }
-    public void draw(SpriteBatch sb, float y)
+    public void draw(SpriteBatch sb, float y, boolean fade)
     {
         for(Brick brick : bricks)
         {
-            brick.draw(sb, texture, y);
+            brick.draw(sb, texture, y, fade);
             if(brick.getY()+brick.getHeight() < -y) // vision of the brick is gone
             {
                 Brick newBrick = createRandomBrick(-y+(blockNum * (GameConstants.BRICK_GAP_SIZE * GameConstants.GAME_SPEED)),  brick.getBrickHeight()+blockNum); //Could have more precision if not using y values but calc manually.

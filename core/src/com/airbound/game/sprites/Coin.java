@@ -34,10 +34,15 @@ public class Coin {
         shape.setPosition(x, y);
     }
 
-    public void draw(SpriteBatch batch, float cam) {
+    public boolean update(SpriteBatch batch, float cam, boolean hardcore) {
         if(GameConstants.COIN_SIZE+y < -cam)
+        {
+            if(hardcore)
+                return true;
             replace();
+        }
         batch.draw(texture, x, y+cam, GameConstants.COIN_SIZE / 2, GameConstants.COIN_SIZE / 2, GameConstants.COIN_SIZE / 2, GameConstants.COIN_SIZE);
+        return false;
     }
 
     public Polygon getShape() {

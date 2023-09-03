@@ -41,11 +41,14 @@ public class GameScreen implements Screen {
     private boolean gameEnded;
     private BitmapFont font;
     private Texture pauseButton;
-    private int coinScore;
+    private boolean fade;
+    private boolean hardcore;
 
     public GameScreen(Airbound game, int difficulty) {
         this.game = game;
-        SetGameSpeed(difficulty);
+        GameUtils.SetGameSpeed(difficulty);
+        fade = game.getPreferencesManager().getFade();
+        hardcore = game.getPreferencesManager().getHardcore();
         sb = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
@@ -63,22 +66,12 @@ public class GameScreen implements Screen {
         isDragging = false; //game init with user not dragging
         initialTouch = new Vector2();
         lastTouch = new Vector2();
-        coinScore = 0;
         coin = new Coin(300, 600+(GameConstants.BRICK_GAP_SIZE*GameConstants.GAME_SPEED));
         gameEnded = false;
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
 
-    }
-
-    private void SetGameSpeed(int difficulty) {
-        if(difficulty == 4)
-        {
-            GameConstants.GAME_SPEED = 1.4f;
-        }
-        else
-            GameConstants.GAME_SPEED = 0.7f + (float) (difficulty * 0.3);
     }
 
     @Override
@@ -93,9 +86,8 @@ public class GameScreen implements Screen {
         ball.update(delta, bricks, coin);
         float ballY = camera.position.y + ball.getPosition().y;
         if (ballY < -GameConstants.BALL_SIZE) {
-            game.setNewScore(ball.getHighestBrick() + coin.getCoinCounter());
             // The ball is not visible on the screen anymore, show the main menu screen
-            game.showMainMenuScreen(ball.getHighestBrick() + coin.getCoinCounter());
+            gameOver();
         }
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -103,12 +95,18 @@ public class GameScreen implements Screen {
         sb.begin();
         background.draw(sb, camera.position.y);
         walls.draw(sb, camera.position.y);
-        bricks.draw(sb, camera.position.y);
-        coin.draw(sb, camera.position.y);
+        bricks.draw(sb, camera.position.y, fade);
+        if(coin.update(sb, camera.position.y, hardcore))
+            gameOver();
         ball.draw(sb, camera.position.y);
         sb.end();
         drawGui(false);
 
+    }
+
+    private void gameOver() {
+        game.setNewScore((int) (ball.getHighestBrick()*GameUtils.GetGameDiff(game.getPreferencesManager())) + coin.getCoinCounter());
+        game.showMainMenuScreen((int) (ball.getHighestBrick()*GameUtils.GetGameDiff(game.getPreferencesManager())) + coin.getCoinCounter());
     }
 
     public void drawGui(Boolean paused)
@@ -117,7 +115,7 @@ public class GameScreen implements Screen {
         sb.begin();
         if(!paused)
             sb.draw(pauseButton, (GameConstants.GAME_WIDTH-GameConstants.PAUSE_BUTTON_SIZE)-GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT-GameConstants.PAUSE_BUTTON_SIZE, GameConstants.PAUSE_BUTTON_SIZE, GameConstants.PAUSE_BUTTON_SIZE);
-        String score = "" + ball.getHighestBrick();
+        String score = "" + (int) (ball.getHighestBrick()*GameUtils.GetGameDiff(game.getPreferencesManager()));
         if(coin.getCoinCounter() > 0)
             score +=  "+" + coin.getCoinCounter();
         font.draw(sb, score, GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
@@ -137,8 +135,9 @@ public class GameScreen implements Screen {
         sb.begin();
         background.draw(sb, camera.position.y);
         walls.draw(sb, camera.position.y);
-        bricks.draw(sb, camera.position.y);
+        bricks.draw(sb, camera.position.y, fade);
         ball.draw(sb, camera.position.y);
+        coin.update(sb, camera.position.y, hardcore);
         sb.end();
         drawGui(true);
     }

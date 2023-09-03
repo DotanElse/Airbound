@@ -33,13 +33,14 @@ public class Brick {
         shape.setPosition(x, y);
     }
 
-    public void draw(SpriteBatch batch, Texture texture, float cam) {
-        if(GameConstants.GAME_SPEED == 1.4f)
+    public void draw(SpriteBatch batch, Texture texture, float cam, boolean fade) {
+        if(fade)
         {
-            float opacity = (y+cam) /GameConstants.GAME_HEIGHT;
+            float opacity = ((y+cam) /GameConstants.GAME_HEIGHT)/2f;
+            if(opacity < GameConstants.BRICK_MIN_OPACITY)
+                opacity = 0;
             batch.setColor(1, 1, 1, opacity);
         }
-
         batch.draw(texture, x, y+cam, width / 2, height / 2, width, height, 1, 1, angle, 0, 0, texture.getWidth(), texture.getHeight(), false, angle>90);
         batch.setColor(1, 1, 1, 1);
     }
