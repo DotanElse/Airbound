@@ -26,25 +26,24 @@ public class SettingScreen implements Screen {
     private Viewport viewport;
     private Texture background;
     private SpriteBatch sb;
-    private Texture returnButton;
-    private TextureRegion diffButton;
     private BitmapFont font;
     private Vector2[] buttonPositions;
-    GlyphLayout layout;
+    private TextureRegion[] textureRegions;
+    private GlyphLayout layout;
 
 
     public SettingScreen(Airbound game) {
         this.game = game;
         sb = new SpriteBatch();
         buttonPositions = new Vector2[ButtonType.values().length];
+        textureRegions = new TextureRegion[ButtonType.values().length];
         initializeButtonPositions();
+        initializeButtonTextures();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         viewport.setCamera(camera);
         background = new Texture("background.png");
-        returnButton = new Texture("buttonDebug.png");
-        diffButton = new TextureRegion(new Texture("buttonDebug.png"));
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
@@ -87,11 +86,11 @@ public class SettingScreen implements Screen {
                     (buttonType == ButtonType.HARDCORE && game.getPreferencesManager().getHardcore())
             )
             {
-                sb.draw(diffButton, position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE / 2, GameConstants.DIFFICULTY_BUTTON_SIZE / 2,
-                        GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE, 1, 1, -20);
+                sb.draw(textureRegions[buttonType.ordinal()], position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE / 2, GameConstants.DIFFICULTY_BUTTON_SIZE / 2,
+                        GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE, 1.3f, 1.3f, -20);
             }
             else
-                sb.draw(diffButton, position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
+                sb.draw(textureRegions[buttonType.ordinal()], position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
         }
 
         String modifiersText = "Modifiers:";
@@ -117,7 +116,6 @@ public class SettingScreen implements Screen {
                     }
                 }
             }
-//            if (touchPos.x <= GameConstants.RETURN_BUTTON_SIZE && touchPos.y >= GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE)
         }
     }
 
@@ -165,6 +163,16 @@ public class SettingScreen implements Screen {
         buttonPositions[4] = new Vector2((GameConstants.DIFFICULTY_BUTTON_SIZE * 3.5f), GameConstants.GAME_HEIGHT - 5 * GameConstants.DIFFICULTY_BUTTON_SIZE);
         buttonPositions[5] = new Vector2((GameConstants.DIFFICULTY_BUTTON_SIZE * 1.5f), GameConstants.GAME_HEIGHT - 8 * GameConstants.DIFFICULTY_BUTTON_SIZE);
         buttonPositions[6] = new Vector2((GameConstants.DIFFICULTY_BUTTON_SIZE * 3.5f), GameConstants.GAME_HEIGHT - 8 * GameConstants.DIFFICULTY_BUTTON_SIZE);
+    }
+
+    private void initializeButtonTextures() {
+        textureRegions[0] = new TextureRegion(new Texture("return.png"));
+        textureRegions[1] = new TextureRegion(new Texture("diff1.png"));
+        textureRegions[2] = new TextureRegion(new Texture("diff2.png"));
+        textureRegions[3] = new TextureRegion(new Texture("diff3.png"));
+        textureRegions[4] = new TextureRegion(new Texture("diff4.png"));
+        textureRegions[5] = new TextureRegion(new Texture("hardcore.png"));
+        textureRegions[6] = new TextureRegion(new Texture("fade.png"));
     }
 
 
