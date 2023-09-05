@@ -20,7 +20,7 @@ public class Coin {
         this.y = y;
         rng = new Random();
         coinCounter = 0;
-        texture = new Texture("ballDebug.png");
+        texture = new Texture("coin.png");
 
         // Create the polygon shape for the coin
         float[] vertices = {
@@ -41,7 +41,7 @@ public class Coin {
                 return true;
             replace();
         }
-        batch.draw(texture, x, y+cam, GameConstants.COIN_SIZE / 2, GameConstants.COIN_SIZE / 2, GameConstants.COIN_SIZE / 2, GameConstants.COIN_SIZE);
+        batch.draw(texture, x, y+cam, GameConstants.COIN_SIZE / 2, GameConstants.COIN_SIZE / 2, GameConstants.COIN_SIZE, GameConstants.COIN_SIZE, 1, 1, 0, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
         return false;
     }
 

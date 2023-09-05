@@ -42,7 +42,7 @@ public class MainMenuScreen implements Screen {
         viewport.setCamera(camera);
         background = new Texture("background.png");
         playButton = new Texture("playButton.png");
-        settingButton = new Texture("buttonDebug.png");
+        settingButton = new Texture("settings.png");
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
