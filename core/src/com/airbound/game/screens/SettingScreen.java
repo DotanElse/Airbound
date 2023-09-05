@@ -110,8 +110,6 @@ public class SettingScreen implements Screen {
                 Vector2 buttonPosition = buttonPositions[buttonType.ordinal()];
                 if (buttonPosition != null) {
                     if (GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.DIFFICULTY_BUTTON_SIZE, buttonPosition.x, buttonPosition.y)) {
-                        System.out.println(game.getPreferencesManager().getHardcore());
-                        System.out.println(game.getPreferencesManager().getFade());
                         setDifficultyForButtonType(buttonType);
                     }
                 }
