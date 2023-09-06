@@ -3,6 +3,7 @@ package com.airbound.game.screens;
 import com.airbound.game.Airbound;
 import com.airbound.game.GameConstants;
 import com.airbound.game.GameUtils;
+import com.airbound.game.PreferencesManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -33,10 +34,12 @@ public class SettingScreen implements Screen {
     private TextureRegion soundOff;
     private GlyphLayout layout;
     private Sound settingChange;
+    private PreferencesManager preferencesManager;
 
 
     public SettingScreen(Airbound game) {
         this.game = game;
+        preferencesManager = game.getPreferencesManager();
         sb = new SpriteBatch();
         settingChange = Gdx.audio.newSound(Gdx.files.internal("settingChange.wav"));
         buttonPositions = new Vector2[ButtonType.values().length];
@@ -87,9 +90,9 @@ public class SettingScreen implements Screen {
         font.draw(sb, scoreMultiplierText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT-3*layout.height);
         for (ButtonType buttonType : ButtonType.values()) {
             Vector2 position = buttonPositions[buttonType.ordinal()];
-            if(buttonType.ordinal() == game.getPreferencesManager().getDifficulty() ||
-                    (buttonType == ButtonType.FADE && game.getPreferencesManager().getFade()) ||
-                    (buttonType == ButtonType.HARDCORE && game.getPreferencesManager().getHardcore())
+            if(buttonType.ordinal() == preferencesManager.getDifficulty() ||
+                    (buttonType == ButtonType.FADE && preferencesManager.getFade()) ||
+                    (buttonType == ButtonType.HARDCORE && preferencesManager.getHardcore())
             )
             {
                 sb.draw(textureRegions[buttonType.ordinal()], position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE / 2f, GameConstants.DIFFICULTY_BUTTON_SIZE / 2f,
@@ -98,7 +101,7 @@ public class SettingScreen implements Screen {
             else
             {
                 sb.draw(textureRegions[buttonType.ordinal()], position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
-                if(buttonType == ButtonType.SOUND && !game.getPreferencesManager().getSoundOn())
+                if(buttonType == ButtonType.SOUND && !preferencesManager.getSoundOn())
                 {
                     sb.draw(soundOff, position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
                 }
@@ -109,6 +112,14 @@ public class SettingScreen implements Screen {
         String modifiersText = "Modifiers:";
         layout.setText(font, modifiersText);
         font.draw(sb, modifiersText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT - 6f * GameConstants.DIFFICULTY_BUTTON_SIZE);
+
+        String modifiersDescription = "";
+        if(preferencesManager.getHardcore())
+            modifiersDescription += "Miss a coin and fail. \n";
+        if(preferencesManager.getFade())
+            modifiersDescription += "Blocks are now fading.";
+        layout.setText(font, modifiersDescription);
+        font.draw(sb, modifiersDescription, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT - 9f * GameConstants.DIFFICULTY_BUTTON_SIZE);
 
         sb.end();
     }
@@ -125,7 +136,7 @@ public class SettingScreen implements Screen {
                 Vector2 buttonPosition = buttonPositions[buttonType.ordinal()];
                 if (buttonPosition != null) {
                     if (GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.DIFFICULTY_BUTTON_SIZE, buttonPosition.x, buttonPosition.y)) {
-                        if(game.getPreferencesManager().getSoundOn())
+                        if(preferencesManager.getSoundOn())
                             settingChange.play(GameConstants.SOUND_STRENGTH);
                         setDifficultyForButtonType(buttonType);
                     }
@@ -136,7 +147,7 @@ public class SettingScreen implements Screen {
 
     private String getScoreMultiplier() {
         String res = "Score multiplier: ";
-        float diff = GameUtils.GetGameDiff(game.getPreferencesManager());
+        float diff = GameUtils.GetGameDiff(preferencesManager);
         res+= diff;
         return res;
     }
@@ -144,26 +155,26 @@ public class SettingScreen implements Screen {
     private void setDifficultyForButtonType(ButtonType buttonType) {
         switch (buttonType) {
             case SPEED1:
-                game.getPreferencesManager().setDifficulty(1);
+                preferencesManager.setDifficulty(1);
                 GameUtils.SetGameSpeed(1);
                 break;
             case SPEED2:
-                game.getPreferencesManager().setDifficulty(2);
+                preferencesManager.setDifficulty(2);
                 GameUtils.SetGameSpeed(2);
                 break;
             case SPEED3:
-                game.getPreferencesManager().setDifficulty(3);
+                preferencesManager.setDifficulty(3);
                 GameUtils.SetGameSpeed(3);
                 break;
             case SPEED4:
-                game.getPreferencesManager().setDifficulty(4);
+                preferencesManager.setDifficulty(4);
                 GameUtils.SetGameSpeed(4);
                 break;
             case HARDCORE:
-                game.getPreferencesManager().toggleHardcore();
+                preferencesManager.toggleHardcore();
                 break;
             case FADE:
-                game.getPreferencesManager().toggleFade();
+                preferencesManager.toggleFade();
                 break;
             default:
                 break;
