@@ -2,6 +2,8 @@ package com.airbound.game.sprites;
 
 import com.airbound.game.GameConstants;
 import com.airbound.game.GameUtils;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,20 +22,31 @@ public class Ball {
     private int highestBrick;
     private int jumpsLeft;
     private float rotationAngle;
+    private boolean soundOn;
+    private Sound pushSound;
+    private Sound collisionSound;
+    private Sound coinPickup;
+    private float collisionSoundTimer = 0f;
+    private static final float COLLISION_TIME_CD = 0.5f;
 
-    public Ball(int x, int y){
+
+    public Ball(int x, int y, boolean soundOn){
         position = new Vector2(x, y);
+        this.soundOn = soundOn;
         velocity = new Vector2(0,0);
         texture = new TextureRegion(new Texture("ball.png"));
         bounds = new Rectangle(x, y, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
         highestBrick = 0;
         jumpsLeft = 2;
         rotationAngle = 0;
+        pushSound = Gdx.audio.newSound(Gdx.files.internal("push.wav"));
+        collisionSound = Gdx.audio.newSound(Gdx.files.internal("brickCollision.wav"));
+        coinPickup = Gdx.audio.newSound(Gdx.files.internal("coinPickup.wav"));
     }
 
     public void update(float dt, Bricks bricks, Coin coin){
         Vector2 newPosition = new Vector2(position);
-
+        collisionSoundTimer+=dt;
         // Apply friction to the velocity
 
         velocity.scl(1-GameConstants.BALL_FRICTION*dt*GameConstants.GAME_SPEED);
@@ -52,6 +65,8 @@ public class Ball {
     private void handleCoinCollision(Coin coin) {
         if(Intersector.overlapConvexPolygons(GameUtils.ballVertices(bounds), coin.getShape()))
         {
+            if(soundOn)
+                coinPickup.play(GameConstants.SOUND_STRENGTH);
             coin.incCoinCounter();
             coin.replace();
         }
@@ -66,6 +81,12 @@ public class Ball {
             int brickCollision = bricks.collisionCheck(bounds);
             if (brickCollision > 0) {
                 jumpsLeft = GameConstants.MAX_JUMPS;
+                if(soundOn)
+                    if(collisionSoundTimer > COLLISION_TIME_CD)
+                    {
+                        collisionSound.play(GameConstants.SOUND_STRENGTH);
+                        collisionSoundTimer = 0;
+                    }
 
                 // Get the brick's angle in radians
                 float brickAngleRadians = (float) Math.toRadians(bricks.getBrickAngle(brickCollision));
@@ -88,6 +109,8 @@ public class Ball {
         if(jumpsLeft == 0)
             return;
         jumpsLeft--;
+        if(soundOn)
+            pushSound.play(GameConstants.SOUND_STRENGTH);
         Vector2 pushVector = initialTouch.sub(lastTouch);
         // Calculate the magnitude of the pushVector
         float magnitude = pushVector.len();

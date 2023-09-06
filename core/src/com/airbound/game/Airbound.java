@@ -6,6 +6,7 @@ import com.airbound.game.screens.PauseScreen;
 import com.airbound.game.screens.SettingScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 
 public class Airbound extends Game {
@@ -15,11 +16,19 @@ public class Airbound extends Game {
 	private SettingScreen settingScreen;
 	private PreferencesManager preferencesManager;
 	private boolean paused;
+	public static Music bgMusic;
 
 	@Override
 	public void create () {
 		preferencesManager = new PreferencesManager();
 		settingScreen = new SettingScreen(this);
+		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
+		bgMusic.setLooping(true);
+		bgMusic.play();
+		if (preferencesManager.getSoundOn())
+			bgMusic.setVolume(GameConstants.SOUND_STRENGTH);
+		else
+			bgMusic.setVolume(0f);
 		this.showMainMenuScreen(0);
 	}
 
@@ -78,5 +87,13 @@ public class Airbound extends Game {
 	public void setNewScore(int highestBrick) {
 		if(preferencesManager.getHighScore() < highestBrick)
 			preferencesManager.setHighScore(highestBrick);
+	}
+
+	public void toggleSound() {
+		preferencesManager.toggleSound();
+		if (preferencesManager.getSoundOn())
+			bgMusic.setVolume(GameConstants.SOUND_STRENGTH);
+		else
+			bgMusic.setVolume(0f);
 	}
 }

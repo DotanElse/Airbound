@@ -11,6 +11,7 @@ import com.airbound.game.sprites.Walls;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -43,10 +44,12 @@ public class GameScreen implements Screen {
     private Texture pauseButton;
     private boolean fade;
     private boolean hardcore;
+    private Sound gameOverSound;
 
     public GameScreen(Airbound game, int difficulty) {
         this.game = game;
         GameUtils.SetGameSpeed(difficulty);
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("gameOver.wav"));
         fade = game.getPreferencesManager().getFade();
         hardcore = game.getPreferencesManager().getHardcore();
         sb = new SpriteBatch();
@@ -62,7 +65,7 @@ public class GameScreen implements Screen {
         pauseButton = new Texture("pause.png");
         walls = new Walls();
         bricks = new Bricks();
-        ball = new Ball(GameConstants.BALL_STARTING_X, GameConstants.BALL_STARTING_Y);
+        ball = new Ball(GameConstants.BALL_STARTING_X, GameConstants.BALL_STARTING_Y, game.getPreferencesManager().getSoundOn());
         isDragging = false; //game init with user not dragging
         initialTouch = new Vector2();
         lastTouch = new Vector2();
@@ -105,6 +108,8 @@ public class GameScreen implements Screen {
     }
 
     private void gameOver() {
+        if(game.getPreferencesManager().getSoundOn())
+            gameOverSound.play(GameConstants.SOUND_STRENGTH);
         game.setNewScore((int) (ball.getHighestBrick()*GameUtils.GetGameDiff(game.getPreferencesManager())) + coin.getCoinCounter());
         game.showMainMenuScreen((int) (ball.getHighestBrick()*GameUtils.GetGameDiff(game.getPreferencesManager())) + coin.getCoinCounter());
     }
@@ -217,6 +222,7 @@ public class GameScreen implements Screen {
         ball.dispose();
         walls.dispose();
         sb.dispose();
+        gameOverSound.dispose();
     }
 
     public boolean isGameEnded()
