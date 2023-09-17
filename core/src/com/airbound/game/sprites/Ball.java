@@ -46,7 +46,6 @@ public class Ball {
     public void update(float dt, Bricks bricks, Coin coin){
         Vector2 newPosition = new Vector2(position);
         collisionSoundTimer+=dt;
-        wallCollisionTimer+=dt;
         // Apply friction to the velocity
 
         velocity.scl(1-GameConstants.BALL_FRICTION*dt*GameConstants.GAME_SPEED);
