@@ -30,13 +30,13 @@ public class GameConstants {
     public static final int BRICK_MAX_ANGLE = 38;
     public static final float BRICK_MIN_OPACITY = 0.1f;
 
-    public static final int PLAY_BUTTON_SIZE = 175;
+    public static final int PLAY_BUTTON_SIZE = 300;
     public static final int PAUSE_BUTTON_SIZE = 80;
-    public static final int SETTING_BUTTON_SIZE = 125;
-    public static final int RETURN_BUTTON_SIZE = 125;
+    public static final int SETTING_BUTTON_SIZE = 150;
+    public static final int RETURN_BUTTON_SIZE = 150;
     public static final int DIFFICULTY_BUTTON_SIZE = 150;
     public static final int CONTINUE_BUTTON_SIZE = 200;
-    public static final int SOUND_TOGGLE_BUTTON_SIZE = 125;
+    public static final int SOUND_TOGGLE_BUTTON_SIZE = 150;
 
     public static final int COIN_SIZE = 80;
 }
