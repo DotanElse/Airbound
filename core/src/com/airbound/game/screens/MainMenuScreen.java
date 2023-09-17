@@ -3,6 +3,7 @@ package com.airbound.game.screens;
 import com.airbound.game.Airbound;
 import com.airbound.game.GameConstants;
 import com.airbound.game.GameUtils;
+import com.airbound.game.sprites.Background;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -20,7 +21,7 @@ public class MainMenuScreen implements Screen {
     private OrthographicCamera camera;
     private OrthographicCamera guiCam;
     private Viewport viewport;
-    private Texture background;
+    private Background background;
     private Texture playButton;
     private SpriteBatch sb;
     private float playButtonX;
@@ -28,6 +29,7 @@ public class MainMenuScreen implements Screen {
     private Texture settingButton;
     private BitmapFont font;
     private int lastScore;
+
 
 
     public MainMenuScreen(Airbound game, int lastScore) {
@@ -40,7 +42,7 @@ public class MainMenuScreen implements Screen {
         guiCam.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         viewport.setCamera(camera);
-        background = new Texture("backgrounds/background.png");
+        background = new Background(0);
         playButton = new Texture("Misc/playButton.png");
         settingButton = new Texture("Misc/settings.png");
         font = new BitmapFont(); // default
@@ -58,20 +60,17 @@ public class MainMenuScreen implements Screen {
         handleInput();
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        sb.setProjectionMatrix(camera.combined);
-        sb.begin();
-        for(int i=0; i<6; i++)
-        {
-            sb.draw(background, 0, (background.getHeight())*i-80, GameConstants.GAME_WIDTH, background.getHeight());
-        }
-        sb.draw(playButton, playButtonX, playButtonY, GameConstants.PLAY_BUTTON_SIZE, GameConstants.PLAY_BUTTON_SIZE);
-        sb.end();
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
+        background.draw(sb, 0);
         font.draw(sb, Integer.toString(lastScore), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
         font.draw(sb, "High Score: " + game.getPreferencesManager().getHighScore(), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT-font.getLineHeight());
         sb.draw(settingButton, GameConstants.GAME_WIDTH-GameConstants.SETTING_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.SETTING_BUTTON_SIZE,
                 GameConstants.SETTING_BUTTON_SIZE, GameConstants.SETTING_BUTTON_SIZE);
+        sb.end();
+        sb.setProjectionMatrix(camera.combined);
+        sb.begin();
+        sb.draw(playButton, playButtonX, playButtonY, GameConstants.PLAY_BUTTON_SIZE, GameConstants.PLAY_BUTTON_SIZE);
         sb.end();
     }
 

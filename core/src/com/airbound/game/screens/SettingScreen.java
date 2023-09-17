@@ -4,6 +4,7 @@ import com.airbound.game.Airbound;
 import com.airbound.game.GameConstants;
 import com.airbound.game.GameUtils;
 import com.airbound.game.PreferencesManager;
+import com.airbound.game.sprites.Background;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -26,7 +27,7 @@ public class SettingScreen implements Screen {
     private Airbound game;
     private OrthographicCamera camera;
     private Viewport viewport;
-    private Texture background;
+    private Background background;
     private SpriteBatch sb;
     private BitmapFont font;
     private Vector2[] buttonPositions;
@@ -51,7 +52,7 @@ public class SettingScreen implements Screen {
         camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         viewport.setCamera(camera);
-        background = new Texture("backgrounds/background.png");
+        background = new Background(0);
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
@@ -80,10 +81,7 @@ public class SettingScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
-        for(int i=0; i<6; i++)
-        {
-            sb.draw(background, 0, (background.getHeight())*i-80, GameConstants.GAME_WIDTH, background.getHeight());
-        }
+        background.draw(sb, 0);
 
         String scoreMultiplierText = getScoreMultiplier();
         layout.setText(font, scoreMultiplierText);
