@@ -22,11 +22,11 @@ public class Airbound extends Game {
 	public void create () {
 		preferencesManager = new PreferencesManager();
 		settingScreen = new SettingScreen(this);
-		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
+		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/music.mp3"));
 		bgMusic.setLooping(true);
 		bgMusic.play();
 		if (preferencesManager.getSoundOn())
-			bgMusic.setVolume(GameConstants.SOUND_STRENGTH);
+			bgMusic.setVolume(GameConstants.SOUND_STRENGTH*2);
 		else
 			bgMusic.setVolume(0f);
 		this.showMainMenuScreen(0);

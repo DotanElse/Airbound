@@ -26,7 +26,7 @@ public class Bricks {
     private int blockNum;
 
     public Bricks(){
-        texture = new Texture("brick.png");
+        texture = new Texture("Misc/brick.png");
         bricks = new ArrayList<>();
         rng = new Random();
         Brick firstBrick = new Brick(20, 0, 400, GameConstants.BRICK_HEIGHT, 0, 1);

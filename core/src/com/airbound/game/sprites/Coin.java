@@ -20,7 +20,7 @@ public class Coin {
         this.y = y;
         rng = new Random();
         coinCounter = 0;
-        texture = new Texture("coin.png");
+        texture = new Texture("Misc/coin.png");
 
         // Create the polygon shape for the coin
         float[] vertices = {

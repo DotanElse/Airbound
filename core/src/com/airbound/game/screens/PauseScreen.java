@@ -24,7 +24,7 @@ public class PauseScreen implements Screen {
     public PauseScreen(Airbound game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
-        continueButton = new Texture("continue.png");
+        continueButton = new Texture("Misc/continue.png");
         sb = new SpriteBatch();
         guiCam = new OrthographicCamera();
         guiCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

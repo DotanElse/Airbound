@@ -30,18 +30,18 @@ public class Ball {
     private static final float COLLISION_TIME_CD = 0.5f;
 
 
-    public Ball(int x, int y, boolean soundOn){
-        position = new Vector2(x, y);
+    public Ball(boolean soundOn, int ballTextureNumber){
+        position = new Vector2(GameConstants.BALL_STARTING_X, GameConstants.BALL_STARTING_Y);
         this.soundOn = soundOn;
         velocity = new Vector2(0,0);
-        texture = new TextureRegion(new Texture("ball.png"));
-        bounds = new Rectangle(x, y, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
+        texture = new TextureRegion(new Texture("balls/ball" + ballTextureNumber + ".png"));
+        bounds = new Rectangle(position.x, position.y, GameConstants.BALL_SIZE, GameConstants.BALL_SIZE);
         highestBrick = 0;
         jumpsLeft = 2;
         rotationAngle = 0;
-        pushSound = Gdx.audio.newSound(Gdx.files.internal("push.wav"));
-        collisionSound = Gdx.audio.newSound(Gdx.files.internal("brickCollision.wav"));
-        coinPickup = Gdx.audio.newSound(Gdx.files.internal("coinPickup.wav"));
+        pushSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/push.wav"));
+        collisionSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/brickCollision.wav"));
+        coinPickup = Gdx.audio.newSound(Gdx.files.internal("Sounds/coinPickup.wav"));
     }
 
     public void update(float dt, Bricks bricks, Coin coin){
@@ -58,7 +58,7 @@ public class Ball {
         // check wall collision and reverse direction if needed
         handleWallCollision();
         handleCoinCollision(coin);
-        rotationAngle -= velocity.x * GameConstants.BALL_SPIN  * GameConstants.GAME_SPEED;
+        rotationAngle -= velocity.x * GameConstants.BALL_SPIN;
         bounds.setPosition(position.x, position.y);
     }
 
@@ -66,7 +66,7 @@ public class Ball {
         if(Intersector.overlapConvexPolygons(GameUtils.ballVertices(bounds), coin.getShape()))
         {
             if(soundOn)
-                coinPickup.play(GameConstants.SOUND_STRENGTH);
+                coinPickup.play(GameConstants.SOUND_STRENGTH/7f);
             coin.incCoinCounter();
             coin.replace();
         }
@@ -84,7 +84,7 @@ public class Ball {
                 if(soundOn)
                     if(collisionSoundTimer > COLLISION_TIME_CD)
                     {
-                        collisionSound.play(GameConstants.SOUND_STRENGTH);
+                        collisionSound.play(GameConstants.SOUND_STRENGTH/1.5f);
                         collisionSoundTimer = 0;
                     }
 
@@ -110,7 +110,7 @@ public class Ball {
             return;
         jumpsLeft--;
         if(soundOn)
-            pushSound.play(GameConstants.SOUND_STRENGTH);
+            pushSound.play(GameConstants.SOUND_STRENGTH/10);
         Vector2 pushVector = initialTouch.sub(lastTouch);
         // Calculate the magnitude of the pushVector
         float magnitude = pushVector.len();

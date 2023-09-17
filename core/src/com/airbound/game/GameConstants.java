@@ -6,7 +6,8 @@ public class GameConstants {
     public static float GRAVITY = 300;
     public static float GAME_SPEED = 1f;
     public static final float FONT_SCALE = 3;
-    public static final float SOUND_STRENGTH = 0.05f;
+    public static final float SOUND_STRENGTH = 0.1f;
+    public static final int TEXTURE_NUMBER = 8;
 
     public static final int BALL_STARTING_X = 300;
     public static final int BALL_STARTING_Y = 300;
@@ -18,7 +19,7 @@ public class GameConstants {
     public static final float BALL_GRAVITY_SCALE = 3;
     public static final float BALL_GRAVITY_NEGATION = 12;
     public static final int BALL_PUSH_SIZE = 50;
-    public static final float BALL_SPIN = 0.05f;
+    public static final float BALL_SPIN = 0.02f;
 
     public static final int WALL_SIZE = 20;
 

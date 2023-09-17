@@ -9,8 +9,8 @@ public class Background {
     private int parts;
     private int[] heights;
 
-    public Background(){
-        background = new Texture("background.png");
+    public Background(int backgroundTextureNumber){
+        background = new Texture("backgrounds/background" + backgroundTextureNumber + ".png");
         parts = GameConstants.GAME_HEIGHT/background.getHeight()+2;
         heights = new int[parts];
         for (int i = 0; i < parts; i++) {

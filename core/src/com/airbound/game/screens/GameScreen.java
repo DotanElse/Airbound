@@ -23,6 +23,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Random;
+
 public class GameScreen implements Screen {
     private Airbound game;
     private OrthographicCamera camera;
@@ -49,7 +51,7 @@ public class GameScreen implements Screen {
     public GameScreen(Airbound game, int difficulty) {
         this.game = game;
         GameUtils.SetGameSpeed(difficulty);
-        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("gameOver.wav"));
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/gameOver.wav"));
         fade = game.getPreferencesManager().getFade();
         hardcore = game.getPreferencesManager().getHardcore();
         sb = new SpriteBatch();
@@ -60,12 +62,17 @@ public class GameScreen implements Screen {
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         viewport.setCamera(camera);
         gravity = GameConstants.GRAVITY;
-        background = new Background();
-        ballPush = new Texture("ballPush.png");
-        pauseButton = new Texture("pause.png");
+        Random random = new Random();
+        int ballTextureNumber = random.nextInt(GameConstants.TEXTURE_NUMBER) + 1;
+        int backgroundTextureNumber = random.nextInt(GameConstants.TEXTURE_NUMBER-1) + 1;
+        if(backgroundTextureNumber == ballTextureNumber)
+            backgroundTextureNumber = GameConstants.TEXTURE_NUMBER;
         walls = new Walls();
         bricks = new Bricks();
-        ball = new Ball(GameConstants.BALL_STARTING_X, GameConstants.BALL_STARTING_Y, game.getPreferencesManager().getSoundOn());
+        ball = new Ball(game.getPreferencesManager().getSoundOn(), ballTextureNumber);
+        background = new Background(backgroundTextureNumber);
+        ballPush = new Texture("Misc/ballPush.png");
+        pauseButton = new Texture("Misc/pause.png");
         isDragging = false; //game init with user not dragging
         initialTouch = new Vector2();
         lastTouch = new Vector2();

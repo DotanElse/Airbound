@@ -40,9 +40,9 @@ public class MainMenuScreen implements Screen {
         guiCam.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         viewport.setCamera(camera);
-        background = new Texture("background.png");
-        playButton = new Texture("playButton.png");
-        settingButton = new Texture("settings.png");
+        background = new Texture("backgrounds/background.png");
+        playButton = new Texture("Misc/playButton.png");
+        settingButton = new Texture("Misc/settings.png");
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);

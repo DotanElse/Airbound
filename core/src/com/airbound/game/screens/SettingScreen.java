@@ -41,17 +41,17 @@ public class SettingScreen implements Screen {
         this.game = game;
         preferencesManager = game.getPreferencesManager();
         sb = new SpriteBatch();
-        settingChange = Gdx.audio.newSound(Gdx.files.internal("settingChange.wav"));
+        settingChange = Gdx.audio.newSound(Gdx.files.internal("Sounds/settingChange.wav"));
         buttonPositions = new Vector2[ButtonType.values().length];
         textureRegions = new TextureRegion[ButtonType.values().length];
-        soundOff = new TextureRegion(new Texture("soundOff.png"));
+        soundOff = new TextureRegion(new Texture("Misc/soundOff.png"));
         initializeButtonPositions();
         initializeButtonTextures();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         viewport.setCamera(camera);
-        background = new Texture("background.png");
+        background = new Texture("backgrounds/background.png");
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
@@ -193,14 +193,14 @@ public class SettingScreen implements Screen {
     }
 
     private void initializeButtonTextures() {
-        textureRegions[0] = new TextureRegion(new Texture("return.png"));
-        textureRegions[1] = new TextureRegion(new Texture("diff1.png"));
-        textureRegions[2] = new TextureRegion(new Texture("diff2.png"));
-        textureRegions[3] = new TextureRegion(new Texture("diff3.png"));
-        textureRegions[4] = new TextureRegion(new Texture("diff4.png"));
-        textureRegions[5] = new TextureRegion(new Texture("hardcore.png"));
-        textureRegions[6] = new TextureRegion(new Texture("fade.png"));
-        textureRegions[7] = new TextureRegion(new Texture("soundOn.png"));
+        textureRegions[0] = new TextureRegion(new Texture("Misc/return.png"));
+        textureRegions[1] = new TextureRegion(new Texture("Misc/diff1.png"));
+        textureRegions[2] = new TextureRegion(new Texture("Misc/diff2.png"));
+        textureRegions[3] = new TextureRegion(new Texture("Misc/diff3.png"));
+        textureRegions[4] = new TextureRegion(new Texture("Misc/diff4.png"));
+        textureRegions[5] = new TextureRegion(new Texture("Misc/hardcore.png"));
+        textureRegions[6] = new TextureRegion(new Texture("Misc/fade.png"));
+        textureRegions[7] = new TextureRegion(new Texture("Misc/soundOn.png"));
     }
 
 
