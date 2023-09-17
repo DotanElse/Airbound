@@ -27,7 +27,6 @@ public class Ball {
     private Sound collisionSound;
     private Sound coinPickup;
     private float collisionSoundTimer = 0f;
-    private static final float COLLISION_TIME_CD = 0.5f;
 
 
     public Ball(boolean soundOn, int ballTextureNumber){
@@ -47,6 +46,7 @@ public class Ball {
     public void update(float dt, Bricks bricks, Coin coin){
         Vector2 newPosition = new Vector2(position);
         collisionSoundTimer+=dt;
+        wallCollisionTimer+=dt;
         // Apply friction to the velocity
 
         velocity.scl(1-GameConstants.BALL_FRICTION*dt*GameConstants.GAME_SPEED);
@@ -73,8 +73,12 @@ public class Ball {
     }
 
     private void handleWallCollision(){
+        System.out.println(velocity.x);
         if(position.x < GameConstants.WALL_SIZE || position.x+bounds.width > GameConstants.GAME_WIDTH - GameConstants.WALL_SIZE)
-            velocity.set(-velocity.x, velocity.y);
+        {
+            if(position.x > GameConstants.GAME_WIDTH/2f && velocity.x > 0 || position.x < GameConstants.GAME_WIDTH/2f && velocity.x < 0)
+                velocity.set(-velocity.x, velocity.y);
+        }
     }
     private boolean handleBrickCollision(Bricks bricks) {
         if (velocity.y < 0) {
@@ -82,7 +86,7 @@ public class Ball {
             if (brickCollision > 0) {
                 jumpsLeft = GameConstants.MAX_JUMPS;
                 if(soundOn)
-                    if(collisionSoundTimer > COLLISION_TIME_CD)
+                    if(collisionSoundTimer > GameConstants.BRICK_SOUND_CD)
                     {
                         collisionSound.play(GameConstants.SOUND_STRENGTH/1.5f);
                         collisionSoundTimer = 0;

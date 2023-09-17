@@ -29,6 +29,7 @@ public class GameConstants {
     public static final int BRICK_MAX_WIDTH = 300;
     public static final int BRICK_MAX_ANGLE = 38;
     public static final float BRICK_MIN_OPACITY = 0.1f;
+    public static final float BRICK_SOUND_CD = 0.5f;
 
     public static final int PLAY_BUTTON_SIZE = 300;
     public static final int PAUSE_BUTTON_SIZE = 80;
