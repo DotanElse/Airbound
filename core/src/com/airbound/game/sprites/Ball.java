@@ -26,7 +26,9 @@ public class Ball {
     private Sound pushSound;
     private Sound collisionSound;
     private Sound coinPickup;
+    private Sound wallCollision;
     private float collisionSoundTimer = 0f;
+    private float wallCollisionSoundTimer = 0f;
 
 
     public Ball(boolean soundOn, int ballTextureNumber){
@@ -40,12 +42,14 @@ public class Ball {
         rotationAngle = 0;
         pushSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/push.wav"));
         collisionSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/brickCollision.wav"));
+        wallCollision = Gdx.audio.newSound(Gdx.files.internal("Sounds/wallCollision.wav"));
         coinPickup = Gdx.audio.newSound(Gdx.files.internal("Sounds/coinPickup.wav"));
     }
 
     public void update(float dt, Bricks bricks, Coin coin){
         Vector2 newPosition = new Vector2(position);
         collisionSoundTimer+=dt;
+        wallCollisionSoundTimer+=dt;
         // Apply friction to the velocity
 
         velocity.scl(1-GameConstants.BALL_FRICTION*dt*GameConstants.GAME_SPEED);
@@ -72,11 +76,20 @@ public class Ball {
     }
 
     private void handleWallCollision(){
-        System.out.println(velocity.x);
         if(position.x < GameConstants.WALL_SIZE || position.x+bounds.width > GameConstants.GAME_WIDTH - GameConstants.WALL_SIZE)
         {
             if(position.x > GameConstants.GAME_WIDTH/2f && velocity.x > 0 || position.x < GameConstants.GAME_WIDTH/2f && velocity.x < 0)
+            {
+                if(soundOn)
+                {
+                    if(wallCollisionSoundTimer > GameConstants.WALL_SOUND_CD)
+                    {
+                        wallCollision.play(GameConstants.SOUND_STRENGTH/7f);
+                        wallCollisionSoundTimer = 0;
+                    }
+                }
                 velocity.set(-velocity.x, velocity.y);
+            }
         }
     }
     private boolean handleBrickCollision(Bricks bricks) {

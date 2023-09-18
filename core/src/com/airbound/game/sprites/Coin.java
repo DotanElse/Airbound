@@ -52,10 +52,8 @@ public class Coin {
     public void replace()
     {
         int gaps = (int) (GameConstants.GAME_HEIGHT/(GameConstants.BRICK_GAP_SIZE*GameConstants.GAME_SPEED)) + 1;
-        System.out.println(gaps);
         y += GameConstants.BRICK_GAP_SIZE*GameConstants.GAME_SPEED * gaps;
         x = rng.nextInt(GameConstants.GAME_WIDTH-2*GameConstants.WALL_SIZE-GameConstants.COIN_SIZE) + GameConstants.WALL_SIZE;
-        System.out.println(y);
         shape.setPosition(x, y);
     }
 

@@ -22,6 +22,7 @@ public class GameConstants {
     public static final float BALL_SPIN = 0.02f;
 
     public static final int WALL_SIZE = 20;
+    public static final float WALL_SOUND_CD = 0.3f;
 
     public static final int BRICK_HEIGHT = 40;
     public static final int BRICK_GAP_SIZE = 700;
