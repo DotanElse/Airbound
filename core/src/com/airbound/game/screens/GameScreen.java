@@ -63,14 +63,11 @@ public class GameScreen implements Screen {
         viewport.setCamera(camera);
         gravity = GameConstants.GRAVITY;
         Random random = new Random();
-        int ballTextureNumber = random.nextInt(GameConstants.TEXTURE_NUMBER) + 1;
-        int backgroundTextureNumber = random.nextInt(GameConstants.TEXTURE_NUMBER-1) + 1;
-        if(backgroundTextureNumber == ballTextureNumber)
-            backgroundTextureNumber = GameConstants.TEXTURE_NUMBER;
-        walls = new Walls();
-        bricks = new Bricks();
-        ball = new Ball(game.getPreferencesManager().getSoundOn(), ballTextureNumber);
-        background = new Background(backgroundTextureNumber);
+        int textureNumber = random.nextInt(GameConstants.TEXTURE_NUMBER) + 1;
+        walls = new Walls(textureNumber);
+        bricks = new Bricks(textureNumber);
+        ball = new Ball(game.getPreferencesManager().getSoundOn(), textureNumber);
+        background = new Background(textureNumber);
         ballPush = new Texture("Misc/ballPush.png");
         pauseButton = new Texture("Misc/pause.png");
         isDragging = false; //game init with user not dragging
