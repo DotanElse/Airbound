@@ -8,13 +8,13 @@ import com.airbound.game.sprites.Ball;
 import com.airbound.game.sprites.Bricks;
 import com.airbound.game.sprites.Coin;
 import com.airbound.game.sprites.Walls;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -47,6 +47,7 @@ public class GameScreen implements Screen {
     private boolean fade;
     private boolean hardcore;
     private Sound gameOverSound;
+    private  Texture overlayTexture;
 
     public GameScreen(Airbound game, int difficulty) {
         this.game = game;
@@ -78,6 +79,10 @@ public class GameScreen implements Screen {
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(0.5f, 0.5f, 0.5f, 0.3f);
+        pixmap.fill();
+        overlayTexture = new Texture(pixmap);
 
     }
 
@@ -138,8 +143,9 @@ public class GameScreen implements Screen {
     }
 
     public void renderFrozenElements() {
-        Gdx.gl.glClearColor(1,0,0,1);
+        Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
         background.draw(sb, camera.position.y);
@@ -147,10 +153,11 @@ public class GameScreen implements Screen {
         bricks.draw(sb, camera.position.y, fade);
         ball.draw(sb, camera.position.y);
         coin.update(sb, camera.position.y, hardcore);
+        sb.draw(overlayTexture, 0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT*2);
         sb.end();
+
         drawGui(true);
     }
-
     private void handleInput() {
         Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         Vector3 guiTouchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
