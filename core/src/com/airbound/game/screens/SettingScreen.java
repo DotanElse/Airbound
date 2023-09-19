@@ -28,6 +28,7 @@ public class SettingScreen implements Screen {
     private OrthographicCamera camera;
     private Viewport viewport;
     private Background background;
+    private Texture table;
     private SpriteBatch sb;
     private BitmapFont font;
     private Vector2[] buttonPositions;
@@ -46,6 +47,7 @@ public class SettingScreen implements Screen {
         buttonPositions = new Vector2[ButtonType.values().length];
         textureRegions = new TextureRegion[ButtonType.values().length];
         soundOff = new TextureRegion(new Texture("Misc/soundOff.png"));
+        table = new Texture("Misc/table.png");
         initializeButtonPositions();
         initializeButtonTextures();
         camera = new OrthographicCamera();
@@ -82,10 +84,11 @@ public class SettingScreen implements Screen {
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
         background.draw(sb, 0);
+        sb.draw(table, (GameConstants.GAME_WIDTH-500)/2f, GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE, 500, 100);
 
         String scoreMultiplierText = getScoreMultiplier();
         layout.setText(font, scoreMultiplierText);
-        font.draw(sb, scoreMultiplierText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT-3*layout.height);
+        font.draw(sb, scoreMultiplierText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE/2f);
         for (ButtonType buttonType : ButtonType.values()) {
             Vector2 position = buttonPositions[buttonType.ordinal()];
             if(buttonType.ordinal() == preferencesManager.getDifficulty() ||
@@ -101,12 +104,12 @@ public class SettingScreen implements Screen {
                 sb.draw(textureRegions[buttonType.ordinal()], position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
                 if(buttonType == ButtonType.SOUND && !preferencesManager.getSoundOn())
                 {
-                    sb.draw(soundOff, position.x, position.y, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.DIFFICULTY_BUTTON_SIZE);
+                    sb.draw(soundOff, (position.x+GameConstants.SOUND_TOGGLE_BUTTON_SIZE+10), (position.y+GameConstants.SOUND_TOGGLE_BUTTON_SIZE), GameConstants.SOUND_TOGGLE_BUTTON_SIZE, GameConstants.SOUND_TOGGLE_BUTTON_SIZE);
                 }
 
             }
         }
-
+        sb.draw(table, (GameConstants.GAME_WIDTH-500)/2f, GameConstants.GAME_HEIGHT - 6.5f * GameConstants.DIFFICULTY_BUTTON_SIZE, 500, 100);
         String modifiersText = "Modifiers:";
         layout.setText(font, modifiersText);
         font.draw(sb, modifiersText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT - 6f * GameConstants.DIFFICULTY_BUTTON_SIZE);
@@ -128,7 +131,7 @@ public class SettingScreen implements Screen {
             camera.unproject(touchPos);
             if (GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.RETURN_BUTTON_SIZE, 0, GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE))
                 game.showMainMenuScreen(0);
-            if (GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.SOUND_TOGGLE_BUTTON_SIZE, GameConstants.GAME_WIDTH-GameConstants.SOUND_TOGGLE_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.SOUND_TOGGLE_BUTTON_SIZE))
+            if (GameUtils.InputTouch(touchPos.x, touchPos.y, GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.DIFFICULTY_BUTTON_SIZE))
                 game.toggleSound();
             for (ButtonType buttonType : ButtonType.values()) {
                 Vector2 buttonPosition = buttonPositions[buttonType.ordinal()];
@@ -187,7 +190,7 @@ public class SettingScreen implements Screen {
         buttonPositions[4] = new Vector2((GameConstants.DIFFICULTY_BUTTON_SIZE * 3.5f), GameConstants.GAME_HEIGHT - 5 * GameConstants.DIFFICULTY_BUTTON_SIZE);
         buttonPositions[5] = new Vector2((GameConstants.DIFFICULTY_BUTTON_SIZE * 1.5f), GameConstants.GAME_HEIGHT - 8 * GameConstants.DIFFICULTY_BUTTON_SIZE);
         buttonPositions[6] = new Vector2((GameConstants.DIFFICULTY_BUTTON_SIZE * 3.5f), GameConstants.GAME_HEIGHT - 8 * GameConstants.DIFFICULTY_BUTTON_SIZE);
-        buttonPositions[7] = new Vector2(GameConstants.GAME_WIDTH-GameConstants.SOUND_TOGGLE_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.SOUND_TOGGLE_BUTTON_SIZE);
+        buttonPositions[7] = new Vector2(GameConstants.GAME_WIDTH-GameConstants.DIFFICULTY_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.DIFFICULTY_BUTTON_SIZE);
     }
 
     private void initializeButtonTextures() {
