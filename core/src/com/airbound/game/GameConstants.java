@@ -8,6 +8,8 @@ public class GameConstants {
     public static final float FONT_SCALE = 3;
     public static final float SOUND_STRENGTH = 0.1f;
     public static final int TEXTURE_NUMBER = 8;
+    public static final int LOGO_WIDTH = 700;
+    public static final int LOGO_HEIGHT = 100;
 
     public static final int BALL_STARTING_X = 300;
     public static final int BALL_STARTING_Y = 300;

@@ -26,6 +26,7 @@ public class MainMenuScreen implements Screen {
     private SpriteBatch sb;
     private float playButtonX;
     private float playButtonY;
+    private Texture logo;
     private Texture settingButton;
     private BitmapFont font;
     private int lastScore;
@@ -45,6 +46,8 @@ public class MainMenuScreen implements Screen {
         background = new Background(0);
         playButton = new Texture("Misc/playButton.png");
         settingButton = new Texture("Misc/settings.png");
+        logo = new Texture("Misc/logo.png");
+
         font = new BitmapFont(); // default
         font.getData().setScale(GameConstants.FONT_SCALE);
         font.setColor(Color.WHITE);
@@ -63,6 +66,7 @@ public class MainMenuScreen implements Screen {
         sb.setProjectionMatrix(guiCam.combined);
         sb.begin();
         background.draw(sb, 0);
+        sb.draw(logo, (GameConstants.GAME_WIDTH-GameConstants.LOGO_WIDTH)/2f, GameConstants.GAME_HEIGHT/(4/3f), GameConstants.LOGO_WIDTH, GameConstants.LOGO_HEIGHT);
         font.draw(sb, Integer.toString(lastScore), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT);
         font.draw(sb, "High Score: " + game.getPreferencesManager().getHighScore(), GameConstants.WALL_SIZE, GameConstants.GAME_HEIGHT-font.getLineHeight());
         sb.draw(settingButton, GameConstants.GAME_WIDTH-GameConstants.SETTING_BUTTON_SIZE, GameConstants.GAME_HEIGHT-GameConstants.SETTING_BUTTON_SIZE,
