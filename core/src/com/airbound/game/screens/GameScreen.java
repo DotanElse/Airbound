@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -76,9 +77,13 @@ public class GameScreen implements Screen {
         lastTouch = new Vector2();
         coin = new Coin(300, 600+(GameConstants.BRICK_GAP_SIZE*GameConstants.GAME_SPEED));
         gameEnded = false;
-        font = new BitmapFont(); // default
-        font.getData().setScale(GameConstants.FONT_SCALE);
-        font.setColor(Color.WHITE);
+
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("Misc/myfont.otf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.color = Color.WHITE;
+        fontParameter.size = 60;
+        font = fontGenerator.generateFont(fontParameter);
+
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(0.5f, 0.5f, 0.5f, 0.3f);
         pixmap.fill();

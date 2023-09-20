@@ -5,7 +5,6 @@ public class GameConstants {
     public static final int GAME_HEIGHT = 1600;
     public static float GRAVITY = 300;
     public static float GAME_SPEED = 1f;
-    public static final float FONT_SCALE = 3;
     public static final float SOUND_STRENGTH = 0.1f;
     public static final int TEXTURE_NUMBER = 8;
     public static final int LOGO_WIDTH = 700;

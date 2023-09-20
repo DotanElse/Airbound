@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -30,13 +31,16 @@ public class SettingScreen implements Screen {
     private Background background;
     private Texture table;
     private SpriteBatch sb;
-    private BitmapFont font;
     private Vector2[] buttonPositions;
     private TextureRegion[] textureRegions;
     private TextureRegion soundOff;
     private GlyphLayout layout;
     private Sound settingChange;
     private PreferencesManager preferencesManager;
+    private FreeTypeFontGenerator fontGenerator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
+    private BitmapFont scoreMultiplierFont;
+    private BitmapFont modifiersFont;
 
 
     public SettingScreen(Airbound game) {
@@ -55,10 +59,18 @@ public class SettingScreen implements Screen {
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, camera);
         viewport.setCamera(camera);
         background = new Background(0);
-        font = new BitmapFont(); // default
-        font.getData().setScale(GameConstants.FONT_SCALE);
-        font.setColor(Color.WHITE);
-        layout = new GlyphLayout(); // Used to calculate text dimensions
+        fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("Misc/myfont.otf"));
+        fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.color = Color.WHITE;
+
+        // Generate the fonts with different sizes
+        fontParameter.size = 60;
+        scoreMultiplierFont = fontGenerator.generateFont(fontParameter);
+
+        fontParameter.size = 90;
+        modifiersFont = fontGenerator.generateFont(fontParameter);
+
+        layout = new GlyphLayout();
     }
 
     public enum ButtonType {
@@ -87,8 +99,8 @@ public class SettingScreen implements Screen {
         sb.draw(table, (GameConstants.GAME_WIDTH-500)/2f, GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE, 500, 100);
 
         String scoreMultiplierText = getScoreMultiplier();
-        layout.setText(font, scoreMultiplierText);
-        font.draw(sb, scoreMultiplierText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE/2f);
+        layout.setText(scoreMultiplierFont, scoreMultiplierText);
+        scoreMultiplierFont.draw(sb, scoreMultiplierText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT-GameConstants.RETURN_BUTTON_SIZE/2f);
         for (ButtonType buttonType : ButtonType.values()) {
             Vector2 position = buttonPositions[buttonType.ordinal()];
             if(buttonType.ordinal() == preferencesManager.getDifficulty() ||
@@ -111,16 +123,15 @@ public class SettingScreen implements Screen {
         }
         sb.draw(table, (GameConstants.GAME_WIDTH-500)/2f, GameConstants.GAME_HEIGHT - 6.5f * GameConstants.DIFFICULTY_BUTTON_SIZE, 500, 100);
         String modifiersText = "Modifiers:";
-        layout.setText(font, modifiersText);
-        font.draw(sb, modifiersText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT - 6f * GameConstants.DIFFICULTY_BUTTON_SIZE);
-
+        layout.setText(modifiersFont, modifiersText);
+        modifiersFont.draw(sb, modifiersText, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT - 6f * GameConstants.DIFFICULTY_BUTTON_SIZE);
         String modifiersDescription = "";
         if(preferencesManager.getHardcore())
             modifiersDescription += "Miss a coin and fail. \n";
         if(preferencesManager.getFade())
             modifiersDescription += "Blocks are now fading.";
-        layout.setText(font, modifiersDescription);
-        font.draw(sb, modifiersDescription, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT - 9f * GameConstants.DIFFICULTY_BUTTON_SIZE);
+        layout.setText(scoreMultiplierFont, modifiersDescription);
+        scoreMultiplierFont.draw(sb, modifiersDescription, (GameConstants.GAME_WIDTH-layout.width)/2, GameConstants.GAME_HEIGHT - 9f * GameConstants.DIFFICULTY_BUTTON_SIZE);
 
         sb.end();
     }
@@ -227,6 +238,6 @@ public class SettingScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        fontGenerator.dispose();
     }
 }

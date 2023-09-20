@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -48,9 +49,11 @@ public class MainMenuScreen implements Screen {
         settingButton = new Texture("Misc/settings.png");
         logo = new Texture("Misc/logo.png");
 
-        font = new BitmapFont(); // default
-        font.getData().setScale(GameConstants.FONT_SCALE);
-        font.setColor(Color.WHITE);
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("Misc/myfont.otf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.color = Color.WHITE;
+        fontParameter.size = 60;
+        font = fontGenerator.generateFont(fontParameter);
     }
 
     @Override
