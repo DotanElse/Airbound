@@ -56,7 +56,7 @@ public class Bricks {
         int x = rng.nextInt((GameConstants.GAME_WIDTH-GameConstants.WALL_SIZE - width) - GameConstants.WALL_SIZE + 1) + GameConstants.WALL_SIZE;
         int height = GameConstants.BRICK_HEIGHT;
         boolean orientation = rng.nextBoolean();
-        int angle = Math.min(rng.nextInt(GameConstants.BRICK_MAX_ANGLE), brickHeight*4);
+        int angle = Math.min(rng.nextInt(brickHeight*4), GameConstants.BRICK_MAX_ANGLE);
         if (orientation)
             angle = 180-angle;
         return new Brick(x, y, width, height, angle, brickHeight);
