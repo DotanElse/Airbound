@@ -84,7 +84,7 @@ public class Ball {
                 {
                     if(wallCollisionSoundTimer > GameConstants.WALL_SOUND_CD)
                     {
-                        wallCollision.play(GameConstants.SOUND_STRENGTH/7f);
+                        wallCollision.play(GameConstants.SOUND_STRENGTH/4f);
                         wallCollisionSoundTimer = 0;
                     }
                 }
