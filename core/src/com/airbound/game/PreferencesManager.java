@@ -21,7 +21,7 @@ public class PreferencesManager {
         return preferences.getInteger(HIGH_SCORE, 0);
     }
 
-    public int getDifficulty() { return preferences.getInteger(DIFF, 0);}
+    public int getDifficulty() { return preferences.getInteger(DIFF, 1);}
 
     public boolean getHardcore() { return preferences.getBoolean(HARDCORE, false);}
 
