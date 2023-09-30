@@ -27,7 +27,7 @@ public class GameConstants {
 
     public static final int BRICK_HEIGHT = 40;
     public static final int BRICK_GAP_SIZE = 700;
-    public static final int BRICK_MIN_WIDTH = 100;
+    public static final int BRICK_MIN_WIDTH = 120;
     public static final int BRICK_MAX_WIDTH = 300;
     public static final int BRICK_MAX_ANGLE = 38;
     public static final float BRICK_MIN_OPACITY = 0.1f;
