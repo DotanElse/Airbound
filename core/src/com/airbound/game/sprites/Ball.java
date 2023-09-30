@@ -100,7 +100,7 @@ public class Ball {
                 if(soundOn)
                     if(collisionSoundTimer > GameConstants.BRICK_SOUND_CD)
                     {
-                        collisionSound.play(GameConstants.SOUND_STRENGTH/1.5f);
+                        collisionSound.play(GameConstants.SOUND_STRENGTH/2f);
                         collisionSoundTimer = 0;
                     }
 
