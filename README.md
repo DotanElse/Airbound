@@ -1,3 +1,3 @@
 # Spacebound
-Using the power of your finger, launch the ball into the air and guide it through a maze of obstacles, bouncing and rebounding off the tower's surfaces. Timing is everything as you strategically maneuver the ball to higher levels
+Using the power of your finger, launch the ball into space and guide it through platforms, bouncing and rebounding off them. Timing is everything as you strategically maneuver the ball as high as you can.
 Powered by the LibGDX framework
